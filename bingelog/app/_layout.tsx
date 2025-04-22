@@ -1,10 +1,13 @@
 import "../global.css"; // Import global Tailwind CSS classes
 // Required once to inject Tailwind layers (base, components, utilities)
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Platform } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import * as NavigationBar from "expo-navigation-bar";
+import Colors from "@/constants/Colors";
+import AppWrapper from "@/components/AppWrapper";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -23,6 +26,13 @@ const RootLayout = () => {
     if (loaded || error) {
       if (error) console.log(error);
       SplashScreen.hideAsync();
+
+      // Configure the system navigation bar (Android only)
+      // Sets background color and ensures light icons
+      if (Platform.OS === "android") {
+        NavigationBar.setBackgroundColorAsync(Colors.background.primary);
+        NavigationBar.setButtonStyleAsync("light");
+      }
     }
   }, [loaded, error]);
 
@@ -32,10 +42,9 @@ const RootLayout = () => {
   }
 
   return (
-    // Temporary layout test to verify Tailwind styles and custom fonts
-    <View className="bg-background flex-1 justify-center items-center">
-      <Text className="text-foreground font-nunitoRegular">RootLayout</Text>
-    </View>
+    <AppWrapper>
+      <Text className="text-body">RootLayout</Text>
+    </AppWrapper>
   );
 };
 

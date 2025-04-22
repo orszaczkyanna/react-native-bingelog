@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom Utility Classes 
+ Used for frequently reused style patterns (e.g., typography) */
+@layer utilities {
+  .text-body {
+    @apply text-foreground font-nunitoRegular text-base;
+  }
+}

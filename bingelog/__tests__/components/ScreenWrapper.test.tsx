@@ -1,17 +1,17 @@
 import { render, screen } from "@testing-library/react-native";
 import { Text } from "react-native";
-import AppWrapper from "@/components/AppWrapper";
+import ScreenWrapper from "@/components/ScreenWrapper";
 
-describe("AppWrapper", () => {
+describe("ScreenWrapper", () => {
   // Minimal test to verify children render correctly inside the wrapper
   it("should render children correctly", () => {
     render(
-      <AppWrapper>
-        <Text>Content</Text>
-      </AppWrapper>
+      <ScreenWrapper>
+        <Text>Test content</Text>
+      </ScreenWrapper>
     );
 
     // Check if the child element is present in the rendered output
-    expect(screen.getByText("Content")).toBeOnTheScreen();
+    expect(screen.getByText("Test content")).toBeOnTheScreen();
   });
 });

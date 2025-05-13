@@ -1,13 +1,14 @@
 import "../global.css"; // Import global Tailwind CSS classes
 // Required once to inject Tailwind layers (base, components, utilities)
 import React from "react";
-import { View, Text, Platform } from "react-native";
+import { Platform } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { StatusBar } from "expo-status-bar";
 import * as NavigationBar from "expo-navigation-bar";
+import { Stack } from "expo-router";
 import Colors from "@/constants/Colors";
-import AppWrapper from "@/components/AppWrapper";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -42,9 +43,14 @@ const RootLayout = () => {
   }
 
   return (
-    <AppWrapper>
-      <Text className="text-body">RootLayout</Text>
-    </AppWrapper>
+    <>
+      {/* Use screenOptions on <Stack> to apply settings to all screens (e.g. hide headers) */}
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+      </Stack>
+      {/* Global StatusBar configuration for the entire application */}
+      <StatusBar style="light" backgroundColor={Colors.background.primary} />
+    </>
   );
 };
 

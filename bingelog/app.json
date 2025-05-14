@@ -4,28 +4,28 @@
     "slug": "bingelog",
     "version": "0.1.0",
     "orientation": "default",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/system/icon.png",
     "scheme": "bingelog",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/splash-icon.png",
+      "image": "./assets/images/system/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#161925"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/system/adaptive-icon.png",
+        "backgroundColor": "#161925"
       }
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/system/favicon.png"
     },
     "plugins": ["expo-router"],
     "experiments": {

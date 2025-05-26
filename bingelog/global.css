@@ -8,4 +8,12 @@
   .text-body {
     @apply text-foreground font-nunitoRegular text-base;
   }
+
+  .text-title {
+    @apply text-foreground font-nunitoBold text-2xl;
+  }
+
+  .text-section-title {
+    @apply text-foreground font-nunitoRegular text-xl;
+  }
 }

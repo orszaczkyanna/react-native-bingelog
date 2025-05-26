@@ -47,6 +47,7 @@ const RootLayout = () => {
       {/* Use screenOptions on <Stack> to apply settings to all screens (e.g. hide headers) */}
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
+        <Stack.Screen name="(auth)" />
       </Stack>
       {/* Global StatusBar configuration for the entire application */}
       <StatusBar style="light" backgroundColor={Colors.background.primary} />

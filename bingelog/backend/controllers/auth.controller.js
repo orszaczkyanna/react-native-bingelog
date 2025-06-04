@@ -3,6 +3,8 @@
 
 const dbPool = require("../config/db");
 const bcrypt = require("bcrypt");
+const { validationResult } = require("express-validator");
+
 const saltRounds = 10;
 
 // Register a new user
@@ -13,20 +15,15 @@ exports.registerUser = async (req, res) => {
   res.send("Register endpoint works");
   */
 
+  // Handle validation errors from express-validator
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     // Extract data from request body
     const { username, email, password } = req.body;
-
-    // Check for missing required fields
-    if (!username || !email || !password) {
-      return res.status(400).json({ message: "All fields must be filled" });
-    }
-
-    // Validate email format using minimal regex
-    const emailRegex = /^\S+@\S+\.\S+$/;
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({ message: "Invalid email format" });
-    }
 
     // Check if the provided email is already registered in the database
     const [existingUsers] = await dbPool.query(
@@ -34,19 +31,11 @@ exports.registerUser = async (req, res) => {
       [email] // Use a parameterized query to prevent SQL injection attacks
     );
     if (existingUsers.length > 0) {
-      return res.status(400).json({ message: "Email is already registered" });
+      return res.status(409).json({ message: "Email is already registered" }); // 409 Conflict
     }
 
     // Hash the password before storing
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    // Temporary response to confirm input is received
-    /*
-    res.status(200).json({
-      message: "Input received",
-      user: { username, email },
-    });
-    */
 
     // Insert the new user into the database
     await dbPool.query(

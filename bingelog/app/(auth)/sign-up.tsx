@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Alert } from "react-native";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import ScrollScreenWrapper from "@/components/ScrollScreenWrapper";
 import Logo from "@/components/Logo";
@@ -12,6 +12,43 @@ const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // State for interaction status
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSignUp = async () => {
+    if (!username || !email || !password) {
+      Alert.alert("Warning", "Please fill in all fields");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // Send POST request to backend registration endpoint
+      const response = await fetch("http://10.0.2.2:4000/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }, // Tell the server we're sending JSON
+        body: JSON.stringify({ username, email, password }), // Convert JavaScript object to JSON string
+      });
+
+      // Convert JSON response to JavaScript object
+      const data = await response.json();
+
+      // If request was successful (HTTP status 2xx)
+      if (response.ok) {
+        Alert.alert("Success", data.message); // Show a native popup alert
+      } else {
+        const message = data.message || "Invalid input";
+        Alert.alert("Warning", message);
+      }
+    } catch (error) {
+      // Network or server error (e.g. backend is unreachable)
+      console.error("Network or server error:", error);
+      Alert.alert("Error", "Unable to reach the server");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <ScreenWrapper>
@@ -51,7 +88,8 @@ const SignUp = () => {
         {/* Submit button */}
         <CTAButton
           title="Sign up"
-          onPress={() => console.log("Sign up")}
+          onPress={handleSignUp}
+          isLoading={isSubmitting}
           pressableClassName="mt-8"
         />
 

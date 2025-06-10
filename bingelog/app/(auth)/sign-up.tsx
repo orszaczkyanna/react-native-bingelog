@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { View, Text, Alert } from "react-native";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import ScrollScreenWrapper from "@/components/ScrollScreenWrapper";
@@ -25,26 +26,27 @@ const SignUp = () => {
     setIsSubmitting(true);
     try {
       // Send POST request to backend registration endpoint
-      const response = await fetch("http://10.0.2.2:4000/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" }, // Tell the server we're sending JSON
-        body: JSON.stringify({ username, email, password }), // Convert JavaScript object to JSON string
-      });
+      const response = await axios.post(
+        "http://10.0.2.2:4000/api/auth/register", // Backend endpoint URL
+        { username, email, password } // Request body (Axios sends JSON by default)
+      );
 
-      // Convert JSON response to JavaScript object
-      const data = await response.json();
-
-      // If request was successful (HTTP status 2xx)
-      if (response.ok) {
-        Alert.alert("Success", data.message); // Show a native popup alert
+      // Axios automatically parses the response as JSON: response.data
+      // If the request is successful (HTTP status code 2xx), show success message
+      Alert.alert("Success", response.data.message);
+    } catch (error: any) {
+      // Non-2xx responses are automatically thrown as errors by Axios
+      if (error.response?.data?.message) {
+        // Server responded with a non-2xx status code and a message
+        Alert.alert("Warning", error.response.data.message);
+      } else if (error.response) {
+        // Server responded with a non-2xx status but no message
+        Alert.alert("Warning", "Invalid input");
       } else {
-        const message = data.message || "Invalid input";
-        Alert.alert("Warning", message);
+        // Network error or server unreachable
+        console.error("Network or server error:", error.message);
+        Alert.alert("Error", "Unable to reach the server");
       }
-    } catch (error) {
-      // Network or server error (e.g. backend is unreachable)
-      console.error("Network or server error:", error);
-      Alert.alert("Error", "Unable to reach the server");
     } finally {
       setIsSubmitting(false);
     }

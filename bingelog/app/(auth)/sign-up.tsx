@@ -6,7 +6,7 @@ import Logo from "@/components/Logo";
 import LabeledInputField from "@/components/LabeledInputField";
 import CTAButton from "@/components/CTAButton";
 import AuthRedirectPrompt from "@/components/AuthRedirectPrompt";
-import { handleSignUp } from "@/features/auth/signUp";
+import { handleSignup } from "@/features/auth/handleSignup";
 
 const SignUp = () => {
   // State for input values — separate useState is preferred for small forms (2–5 fields)
@@ -19,7 +19,7 @@ const SignUp = () => {
 
   // Submit form values and trigger async registration process
   const onSubmit = () => {
-    handleSignUp({
+    handleSignup({
       username,
       email,
       password,

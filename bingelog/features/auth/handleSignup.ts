@@ -1,7 +1,7 @@
 // Handles user registration logic
 
 import { Alert } from "react-native";
-import { signUpSchema } from "./signUpValidation";
+import { signupSchema } from "./validationSchemas";
 import api from "@/lib/axios";
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
   onFinish: () => void;
 }
 
-export const handleSignUp = async ({
+export const handleSignup = async ({
   username,
   email,
   password,
@@ -22,7 +22,7 @@ export const handleSignUp = async ({
   const newUser = { username, email, password };
 
   // Client-side validation using Zod schema
-  const validation = signUpSchema.safeParse(newUser); // .safeParse() returns success: true/false instead of throwing
+  const validation = signupSchema.safeParse(newUser); // .safeParse() returns success: true/false instead of throwing
   // If validation fails, show all error messages in a popup
   if (!validation.success) {
     const errorMessages = validation.error.errors

@@ -6,6 +6,8 @@ import Logo from "@/components/Logo";
 import LabeledInputField from "@/components/LabeledInputField";
 import CTAButton from "@/components/CTAButton";
 import AuthRedirectPrompt from "@/components/AuthRedirectPrompt";
+import AlertModal from "@/components/AlertModal";
+import { useAlertModal } from "@/hooks/useAlertModal";
 import { handleSignup } from "@/features/auth/handleSignup";
 
 const SignUp = () => {
@@ -17,6 +19,10 @@ const SignUp = () => {
   // State for interaction status
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // State and handlers for alert modal provided by useAlertModal() custom hook
+  const { alertVisible, alertTitle, alertMessage, showAlert, hideAlert } =
+    useAlertModal();
+
   // Submit form values and trigger async registration process
   const onSubmit = () => {
     handleSignup({
@@ -25,6 +31,7 @@ const SignUp = () => {
       password,
       onStart: () => setIsSubmitting(true),
       onFinish: () => setIsSubmitting(false),
+      onAlert: showAlert, // same as `onAlert: (title, message) => showAlert(title, message)`
     });
   };
 
@@ -78,6 +85,15 @@ const SignUp = () => {
           linkHref="/log-in"
         />
       </ScrollScreenWrapper>
+
+      {/* AlertModal is logically part of this screen, so it's rendered inside ScreenWrapper */}
+      {/* Place it outside ScrollScreenWrapper to avoid layout issues with ScrollView */}
+      <AlertModal
+        visible={alertVisible}
+        title={alertTitle}
+        message={alertMessage}
+        onClose={hideAlert}
+      />
     </ScreenWrapper>
   );
 };

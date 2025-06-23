@@ -26,6 +26,11 @@ const passwordSchema = z
     { message: "Password must include a special character" }
   );
 
+const loginPasswordSchema = z
+  .string()
+  .trim()
+  .min(1, { message: "Password is required" });
+
 // Combined form-level validation schemas
 export const signupSchema = z.object({
   username: usernameSchema,
@@ -33,7 +38,10 @@ export const signupSchema = z.object({
   password: passwordSchema,
 });
 
-// Add other schemas as needed:
-// export const loginSchema = z.object({ ... });
+export const loginSchema = z.object({
+  email: emailSchema,
+  password: loginPasswordSchema,
+});
 
 export type SignupInputType = z.infer<typeof signupSchema>; // Extracts a static TypeScript type from the Zod schema
+export type LoginInputType = z.infer<typeof loginSchema>;

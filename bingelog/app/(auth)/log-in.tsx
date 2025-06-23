@@ -8,7 +8,7 @@ import CTAButton from "@/components/CTAButton";
 import AuthRedirectPrompt from "@/components/AuthRedirectPrompt";
 import AlertModal from "@/components/AlertModal";
 import { useAlertModal } from "@/hooks/useAlertModal";
-// import { handleLogin } from "@/features/auth/handleLogin";
+import { handleLogin } from "@/features/auth/handleLogin";
 
 const LogIn = () => {
   // State for input values
@@ -24,9 +24,13 @@ const LogIn = () => {
 
   // Submit form values and trigger async login process
   const onSubmit = () => {
-    console.log("Log in");
-    // TODO: implement login handler
-    // handleLogin({ ... });
+    handleLogin({
+      email,
+      password,
+      onStart: () => setIsSubmitting(true),
+      onFinish: () => setIsSubmitting(false),
+      onAlert: showAlert,
+    });
   };
 
   return (

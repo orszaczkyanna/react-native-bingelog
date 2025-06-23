@@ -42,7 +42,7 @@ export const handleSignup = async ({
   } catch (err: any) {
     // Non-2xx responses are automatically thrown as errors by Axios
     if (err.response) {
-      const message = err.response.data?.message || "Invalid input";
+      const message = err.response.data?.message || "Something went wrong";
       onAlert("Warning", message);
     } else {
       // Network error or server unreachable

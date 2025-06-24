@@ -4,12 +4,12 @@
 const express = require("express"); // same as `import express from "express"`
 const app = express();
 
-const authRoutes = require("./routes/auth.routes");
+const registerRoutes = require("./routes/register.routes");
 
 app.use(express.json());
 
 // Mount auth-related endpoints under /api/auth (e.g. /api/auth/register)
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", registerRoutes);
 
 // Test endpoint to confirm the server is up and responding
 /*

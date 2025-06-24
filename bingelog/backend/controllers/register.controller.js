@@ -1,5 +1,5 @@
-// Authentication controller
-// Handles business logic — validation, password hashing, and DB actions — for user registration and login
+// Registration controller
+// Handles business logic for user registration: validation, hashing, and DB actions
 
 const dbPool = require("../config/db");
 const bcrypt = require("bcrypt");
@@ -7,7 +7,6 @@ const { validationResult } = require("express-validator");
 
 const saltRounds = 10;
 
-// Register a new user
 exports.registerUser = async (req, res) => {
   // Basic endpoint check (use to verify that routing works)
   /*

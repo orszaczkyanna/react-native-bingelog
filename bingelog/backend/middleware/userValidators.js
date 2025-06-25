@@ -26,7 +26,7 @@ const email = body("email")
   .withMessage("Email must contain only ASCII characters")
   .normalizeEmail(); // Sanitize email to a consistent format (e.g., lowercases entire email, removes dots from gmail)
 
-// Password validation (strong password)
+// Password validation (strong password for register)
 const password = body("password")
   .trim()
   .notEmpty()
@@ -43,7 +43,14 @@ const password = body("password")
     "Password must be at least 8 characters long and include uppercase, lowercase, number, and symbol"
   );
 
+// Password validation (basic presence check for login)
+const passwordLogin = body("password")
+  .trim()
+  .notEmpty()
+  .withMessage("Password is required");
+
 // Export validation middlewares grouped by use case
 module.exports = {
   validateRegister: [username, email, password],
+  validateLogin: [email, passwordLogin],
 };

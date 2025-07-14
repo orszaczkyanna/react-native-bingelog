@@ -3,12 +3,8 @@
 
 const dbPool = require("../config/db");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
-
-// Load secret keys from environment variables (used for signing tokens)
-const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
-const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
+const { generateAuthTokens } = require("../utils/tokenUtils"); // Utility function to generate JWT tokens
 
 // `exports.loginUser` (CommonJS) same as `export const loginUser` (ES modules)
 exports.loginUser = async (req, res) => {
@@ -43,19 +39,8 @@ exports.loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    // Generate JWT access token with user ID payload (short-lived)
-    const accessToken = jwt.sign(
-      { userId: foundUser.id },
-      ACCESS_TOKEN_SECRET,
-      { expiresIn: "15m" }
-    );
-
-    // Generate refresh token (longer-lived)
-    const refreshToken = jwt.sign(
-      { userId: foundUser.id },
-      REFRESH_TOKEN_SECRET,
-      { expiresIn: "7d" }
-    );
+    // Generate access and refresh token using utility function
+    const { accessToken, refreshToken } = generateAuthTokens(foundUser.id);
 
     // Store refresh token in database (optional, for revocation)
     await dbPool.query("UPDATE users SET refresh_token = ? WHERE id = ?", [

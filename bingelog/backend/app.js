@@ -6,12 +6,14 @@ const app = express();
 
 const registerRoutes = require("./routes/register.routes");
 const loginRoutes = require("./routes/login.routes");
+const refreshRoutes = require("./routes/refresh.routes");
 
 app.use(express.json());
 
 // Mount auth-related endpoints under /api/auth (e.g. /api/auth/register)
 app.use("/api/auth", registerRoutes);
 app.use("/api/auth", loginRoutes);
+app.use("/api/auth", refreshRoutes);
 
 // Test endpoint to confirm the server is up and responding
 /*

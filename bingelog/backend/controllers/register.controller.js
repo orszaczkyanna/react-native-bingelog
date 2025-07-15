@@ -3,7 +3,6 @@
 
 const dbPool = require("../config/db");
 const bcrypt = require("bcrypt");
-const { validationResult } = require("express-validator");
 
 const saltRounds = 10;
 
@@ -13,12 +12,6 @@ exports.registerUser = async (req, res) => {
   console.log("Request body: ", req.body);
   res.send("Register endpoint works");
   */
-
-  // Handle validation errors from express-validator
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
 
   try {
     // Extract data from request body

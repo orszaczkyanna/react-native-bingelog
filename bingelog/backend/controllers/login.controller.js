@@ -3,17 +3,10 @@
 
 const dbPool = require("../config/db");
 const bcrypt = require("bcrypt");
-const { validationResult } = require("express-validator");
 const { generateAuthTokens } = require("../utils/tokenUtils"); // Utility function to generate JWT tokens
 
 // `exports.loginUser` (CommonJS) same as `export const loginUser` (ES modules)
 exports.loginUser = async (req, res) => {
-  // Handle validation errors
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
   try {
     // Extract data from request body
     const { email, password } = req.body;

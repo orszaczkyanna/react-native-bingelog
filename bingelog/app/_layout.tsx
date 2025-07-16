@@ -48,6 +48,7 @@ const RootLayout = () => {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(tabs)" />
       </Stack>
       {/* Global StatusBar configuration for the entire application */}
       <StatusBar style="light" backgroundColor={Colors.background.primary} />

@@ -9,6 +9,7 @@ import { StatusBar } from "expo-status-bar";
 import * as NavigationBar from "expo-navigation-bar";
 import { Stack } from "expo-router";
 import Colors from "@/constants/Colors";
+import AuthProvider from "@/context/AuthContext";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -44,12 +45,16 @@ const RootLayout = () => {
 
   return (
     <>
-      {/* Use screenOptions on <Stack> to apply settings to all screens (e.g. hide headers) */}
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="(auth)" />
-        <Stack.Screen name="(tabs)" />
-      </Stack>
+      <AuthProvider>
+        {/* Use screenOptions on <Stack> to apply settings to all screens (e.g. hide headers) */}
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" />
+          <Stack.Screen name="(auth)" />
+          <Stack.Screen name="(tabs)" />
+        </Stack>
+      </AuthProvider>
+
+      {/* Global UI elements don't depend on authentication state or context */}
       {/* Global StatusBar configuration for the entire application */}
       <StatusBar style="light" backgroundColor={Colors.background.primary} />
     </>

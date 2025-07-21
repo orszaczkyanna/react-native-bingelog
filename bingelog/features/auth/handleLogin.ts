@@ -9,6 +9,8 @@ interface Props {
   onStart: () => void;
   onFinish: () => void;
   onAlert: (title: string, message: string) => void;
+  setSessionAuth: (token: string, userId: string) => void; // to save auth data (accessToken and user ID) in memory
+  onSuccess: () => void;
 }
 
 export const handleLogin = async ({
@@ -17,6 +19,8 @@ export const handleLogin = async ({
   onStart,
   onFinish,
   onAlert,
+  setSessionAuth,
+  onSuccess,
 }: Props) => {
   const credentials = { email, password };
 
@@ -46,8 +50,26 @@ export const handleLogin = async ({
   onStart();
 
   try {
+    // Send login request to the server
     const response = await api.post("/auth/login", credentials);
-    onAlert("Success", response.data.message);
+
+    // Extract accessToken and user object from server response
+    const { accessToken, user } = response.data;
+
+    // Check if accessToken and user ID are present (undefined doesn't throw an error)
+    if (!accessToken || !user?.id) {
+      onAlert("Error", "Invalid response from server");
+      return;
+    }
+
+    // Save auth data in memory (React Context)
+    setSessionAuth(accessToken, user.id);
+
+    // Navigate to the home screen or dashboard
+    onSuccess(); // e.g, router.replace("/home")
+
+    // // Show success alert (optional)
+    // onAlert("Success", response.data.message);
   } catch (err: any) {
     if (err.response) {
       const message = err.response.data?.message || "Something went wrong";

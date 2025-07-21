@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text } from "react-native";
+import { useRouter } from "expo-router";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import ScrollScreenWrapper from "@/components/ScrollScreenWrapper";
 import Logo from "@/components/Logo";
@@ -9,8 +10,11 @@ import AuthRedirectPrompt from "@/components/AuthRedirectPrompt";
 import AlertModal from "@/components/AlertModal";
 import { useAlertModal } from "@/hooks/useAlertModal";
 import { handleLogin } from "@/features/auth/handleLogin";
+import { useAuthContext } from "@/context/AuthContext";
 
 const LogIn = () => {
+  const router = useRouter();
+
   // State for input values
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,6 +26,9 @@ const LogIn = () => {
   const { alertVisible, alertTitle, alertMessage, showAlert, hideAlert } =
     useAlertModal();
 
+  // Auth setter to save session data (access token and user ID) in memory after successful login
+  const { setSessionAuth } = useAuthContext();
+
   // Submit form values and trigger async login process
   const onSubmit = () => {
     handleLogin({
@@ -30,6 +37,10 @@ const LogIn = () => {
       onStart: () => setIsSubmitting(true),
       onFinish: () => setIsSubmitting(false),
       onAlert: showAlert,
+      setSessionAuth,
+      onSuccess: () => {
+        router.replace("/home"); // `replace` avoids returning to login on back press
+      },
     });
   };
 

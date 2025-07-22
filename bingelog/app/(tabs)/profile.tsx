@@ -1,14 +1,17 @@
 import React from "react";
 import { View, Text } from "react-native";
 import ScreenWrapper from "@/components/ScreenWrapper";
+import ProtectedScreen from "@/components/ProtectedScreen";
 
 const Profile = () => {
   return (
-    <ScreenWrapper>
-      <View>
-        <Text className="text-body">Profile</Text>
-      </View>
-    </ScreenWrapper>
+    <ProtectedScreen>
+      <ScreenWrapper>
+        <View>
+          <Text className="text-body">Profile</Text>
+        </View>
+      </ScreenWrapper>
+    </ProtectedScreen>
   );
 };
 

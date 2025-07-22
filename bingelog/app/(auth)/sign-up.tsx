@@ -9,8 +9,12 @@ import AuthRedirectPrompt from "@/components/AuthRedirectPrompt";
 import AlertModal from "@/components/AlertModal";
 import { useAlertModal } from "@/hooks/useAlertModal";
 import { handleSignup } from "@/features/auth/handleSignup";
+import { useRedirectIfAuthenticated } from "@/hooks/useRedirectIfAuthenticated";
 
 const SignUp = () => {
+  // Redirect to home if user is already logged in
+  useRedirectIfAuthenticated();
+
   // State for input values — separate useState is preferred for small forms (2–5 fields)
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");

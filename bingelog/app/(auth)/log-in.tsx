@@ -11,9 +11,13 @@ import AlertModal from "@/components/AlertModal";
 import { useAlertModal } from "@/hooks/useAlertModal";
 import { handleLogin } from "@/features/auth/handleLogin";
 import { useAuthContext } from "@/context/AuthContext";
+import { useRedirectIfAuthenticated } from "@/hooks/useRedirectIfAuthenticated";
 
 const LogIn = () => {
   const router = useRouter();
+
+  // Redirect to home if user is already logged in
+  useRedirectIfAuthenticated();
 
   // State for input values
   const [email, setEmail] = useState("");

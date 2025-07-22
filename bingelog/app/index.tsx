@@ -8,10 +8,13 @@ import Logo from "@/components/Logo";
 import CTAButton from "@/components/CTAButton";
 import images from "@/constants/images";
 import ScrollScreenWrapper from "@/components/ScrollScreenWrapper";
+import { useRedirectIfAuthenticated } from "@/hooks/useRedirectIfAuthenticated";
 
 const index = () => {
   // useRouter() is preferred for navigation inside components
   const router = useRouter();
+
+  useRedirectIfAuthenticated();
 
   return (
     <ScreenWrapper>

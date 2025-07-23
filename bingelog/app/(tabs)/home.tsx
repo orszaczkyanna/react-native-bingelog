@@ -8,9 +8,21 @@ import { useRouter } from "expo-router";
 import { useAuthContext } from "@/context/AuthContext";
 import CTAButton from "@/components/CTAButton";
 
+import { refreshAccessToken } from "@/features/auth/refreshAccessToken";
+
 const Home = () => {
   const router = useRouter();
   const { clearSessionAuth } = useAuthContext();
+
+  // for testing purposes to ensure the refresh logic works as expected
+  const testRefresh = async () => {
+    try {
+      const newAccessToken = await refreshAccessToken();
+      console.log("New access token:", newAccessToken);
+    } catch (error) {
+      console.error("Refresh token error:", error);
+    }
+  };
 
   return (
     <ProtectedScreen>
@@ -27,6 +39,12 @@ const Home = () => {
           />
 
           <CTAButton title="Log in" onPress={() => router.replace("/log-in")} />
+
+          <CTAButton
+            title="New Access Token"
+            onPress={testRefresh}
+            pressableClassName="mt-10"
+          />
         </View>
       </ScreenWrapper>
     </ProtectedScreen>

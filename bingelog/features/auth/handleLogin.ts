@@ -2,6 +2,7 @@
 
 import { loginSchema } from "./validationSchemas";
 import api from "@/lib/axios";
+import { saveRefreshToken } from "@/lib/secureStore";
 
 interface Props {
   email: string;
@@ -53,17 +54,20 @@ export const handleLogin = async ({
     // Send login request to the server
     const response = await api.post("/auth/login", credentials);
 
-    // Extract accessToken and user object from server response
-    const { accessToken, user } = response.data;
+    // Extract tokens and user object from server response
+    const { accessToken, refreshToken, user } = response.data;
 
-    // Check if accessToken and user ID are present (undefined doesn't throw an error)
-    if (!accessToken || !user?.id) {
+    // Check if tokens and user ID are present (undefined doesn't throw an error)
+    if (!accessToken || !refreshToken || !user?.id) {
       onAlert("Error", "Invalid response from server");
       return;
     }
 
     // Save auth data in memory (React Context)
     setSessionAuth(accessToken, user.id);
+
+    // Save the refresh token in Secure Storage
+    await saveRefreshToken(refreshToken);
 
     // Navigate to the home screen or dashboard
     onSuccess(); // e.g, router.replace("/home")

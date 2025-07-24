@@ -20,10 +20,10 @@ exports.handleRefreshToken = async (req, res) => {
       incomingRefreshToken,
       process.env.REFRESH_TOKEN_SECRET,
       async (err, decoded) => {
-        // If verification fails, send 403 Forbidden
+        // If verification fails, send 401 Unauthorized
         if (err) {
           return res
-            .status(403)
+            .status(401)
             .json({ message: "Invalid or expired refresh token" });
         }
 
@@ -37,9 +37,9 @@ exports.handleRefreshToken = async (req, res) => {
 
         const dbRefreshToken = userRows[0]?.refresh_token;
 
-        // If token is not found or doesn't match the one provided, send 403 Forbidden
+        // If token is not found or doesn't match the one provided, send 401 Unauthorized
         if (!dbRefreshToken || dbRefreshToken !== incomingRefreshToken) {
-          return res.status(403).json({ message: "Refresh token mismatch" });
+          return res.status(401).json({ message: "Refresh token mismatch" });
         }
 
         // Generate a new access token

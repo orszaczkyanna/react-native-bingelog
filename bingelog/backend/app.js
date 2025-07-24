@@ -15,6 +15,9 @@ app.use("/api/auth", registerRoutes);
 app.use("/api/auth", loginRoutes);
 app.use("/api/auth", refreshRoutes);
 
+// Test route to verify access token functionality (delete later)
+app.use("/api/protected", require("./routes/protected.routes"));
+
 // Test endpoint to confirm the server is up and responding
 /*
 app.get("/", (req, res) => {

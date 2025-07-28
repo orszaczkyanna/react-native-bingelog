@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text } from "react-native";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import ProtectedScreen from "@/components/ProtectedScreen";
@@ -9,6 +9,7 @@ import { useAuthContext } from "@/context/AuthContext";
 import CTAButton from "@/components/CTAButton";
 
 import { refreshAccessToken } from "@/features/auth/refreshAccessToken";
+import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 
 const Home = () => {
   const router = useRouter();
@@ -23,6 +24,20 @@ const Home = () => {
       console.error("Refresh token error:", error);
     }
   };
+
+  // for testing protected endpoint access
+  const axiosPrivate = useAxiosPrivate();
+  const testProtectedRequest = async () => {
+    try {
+      const response = await axiosPrivate.get("/protected/test");
+      console.log("Protected data:", response.data);
+    } catch (err) {
+      console.error("Request failed:", err);
+    }
+  };
+
+  const { accessToken } = useAuthContext();
+  console.log("Access token in Home:", accessToken);
 
   return (
     <ProtectedScreen>
@@ -44,6 +59,11 @@ const Home = () => {
             title="New Access Token"
             onPress={testRefresh}
             pressableClassName="mt-10"
+          />
+
+          <CTAButton
+            title="Test Protected Request"
+            onPress={testProtectedRequest}
           />
         </View>
       </ScreenWrapper>

@@ -32,7 +32,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Set authentication state (store access token and user ID in memory for authenticated access)
   const setSessionAuth = (token: string, userId: string) => {
-    setAccessToken(token); // Required to access protected routes and make authorized API requests
+    setAccessToken(token); // Required to access protected routes and make authorized API requests (available only in React components)
     setUserId(userId); // Identifies the logged-in user
 
     console.log(`Session started: ID${userId} with accessToken ${token}`);

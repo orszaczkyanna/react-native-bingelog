@@ -10,6 +10,8 @@ import images from "@/constants/images";
 import ScrollScreenWrapper from "@/components/ScrollScreenWrapper";
 import { useRedirectIfAuthenticated } from "@/hooks/useRedirectIfAuthenticated";
 
+import SecondaryButton from "@/components/SecondaryButton"; // for testing
+
 const index = () => {
   // useRouter() is preferred for navigation inside components
   const router = useRouter();
@@ -43,6 +45,9 @@ const index = () => {
           // (auth) is a layout group folder, so it doesn't appear in the route path
           pressableClassName="my-4"
         />
+
+        {/* Temporary link to Home for testing */}
+        <SecondaryButton title="Home" onPress={() => router.push("/home")} />
 
         <Text className="text-foreground-secondary font-nunitoRegular text-sm">
           Illustrations by{" "}

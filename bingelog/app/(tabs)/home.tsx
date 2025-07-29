@@ -2,11 +2,12 @@ import React, { useEffect } from "react";
 import { View, Text } from "react-native";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import ProtectedScreen from "@/components/ProtectedScreen";
+import SearchBar from "@/components/SearchBar";
 
 // Test imports
 import { useRouter } from "expo-router";
 import { useAuthContext } from "@/context/AuthContext";
-import CTAButton from "@/components/CTAButton";
+import SecondaryButton from "@/components/SecondaryButton";
 
 import { refreshAccessToken } from "@/features/auth/refreshAccessToken";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
@@ -40,34 +41,46 @@ const Home = () => {
   console.log("Access token in Home:", accessToken);
 
   return (
-    <ProtectedScreen>
-      <ScreenWrapper>
-        <View className="flex-1 items-center justify-center gap-y-4">
-          <Text className="text-body">Home</Text>
+    // <ProtectedScreen>
+    <ScreenWrapper>
+      <View className="flex-1 items-center justify-center gap-y-4">
+        <Text className="text-body">Home</Text>
+        <SearchBar />
+        {/* <LabeledInputField /> */}
 
-          {/* Test buttons */}
-          <CTAButton title="Force Logout" onPress={clearSessionAuth} />
+        {/* Test buttons */}
+        <SecondaryButton
+          title="Force Logout"
+          onPress={clearSessionAuth}
+          variant="danger"
+          pressableClassName="mt-10"
+        />
 
-          <CTAButton
-            title="Sign up"
-            onPress={() => router.replace("/sign-up")}
-          />
+        <SecondaryButton
+          title="Sign up"
+          onPress={() => router.replace("/sign-up")}
+          variant="confirm"
+        />
 
-          <CTAButton title="Log in" onPress={() => router.replace("/log-in")} />
+        <SecondaryButton
+          title="Log in"
+          onPress={() => router.replace("/log-in")}
+          variant="confirm"
+        />
 
-          <CTAButton
-            title="New Access Token"
-            onPress={testRefresh}
-            pressableClassName="mt-10"
-          />
+        <SecondaryButton
+          title="New Access Token"
+          onPress={testRefresh}
+          pressableClassName="mt-10"
+        />
 
-          <CTAButton
-            title="Test Protected Request"
-            onPress={testProtectedRequest}
-          />
-        </View>
-      </ScreenWrapper>
-    </ProtectedScreen>
+        <SecondaryButton
+          title="Test Protected Request"
+          onPress={testProtectedRequest}
+        />
+      </View>
+    </ScreenWrapper>
+    // </ProtectedScreen>
   );
 };
 

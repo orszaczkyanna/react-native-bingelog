@@ -5,13 +5,13 @@ import ProtectedScreen from "@/components/ProtectedScreen";
 
 const Profile = () => {
   return (
-    <ProtectedScreen>
-      <ScreenWrapper>
-        <View>
-          <Text className="text-body">Profile</Text>
-        </View>
-      </ScreenWrapper>
-    </ProtectedScreen>
+    // <ProtectedScreen>
+    <ScreenWrapper>
+      <View>
+        <Text className="text-body">Profile</Text>
+      </View>
+    </ScreenWrapper>
+    // </ProtectedScreen>
   );
 };
 

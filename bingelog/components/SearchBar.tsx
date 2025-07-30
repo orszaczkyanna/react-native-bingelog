@@ -36,7 +36,7 @@ const SearchBar = ({ initialQuery, ...rest }: Props) => {
 
   return (
     <View
-      className={`w-[90vw] flex flex-row items-center bg-background-input rounded-md mt-4 px-4 border-2  ${
+      className={`w-[90vw] h-12 flex flex-row items-center bg-background-input rounded-md mt-4 px-4 border-2  ${
         isFocused ? "border-accent" : "border-background-input"
       } `}
     >

@@ -20,7 +20,7 @@ const LabeledInputField = ({ label, isPassword, ...rest }: Props) => {
       </Text>
 
       <View
-        className={`flex flex-row items-center w-full bg-background-input rounded-md mt-4 px-4 border-2  ${
+        className={`flex flex-row items-center w-full h-12 bg-background-input rounded-md mt-4 px-4 border-2  ${
           isFocused ? "border-accent" : "border-background-input"
         } `}
       >
@@ -32,13 +32,13 @@ const LabeledInputField = ({ label, isPassword, ...rest }: Props) => {
           secureTextEntry={isPassword && !showPassword}
           onFocus={() => setIsFocused(true)} // Triggered when input gains focus
           onBlur={() => setIsFocused(false)} // Triggered when input loses focus
-          {...rest} // value, onChangeText, placeholder, keyboardType
+          {...rest} // value, onChangeText, placeholder, keyboardType, etc.
         />
         {isPassword && (
           <Pressable onPress={() => setShowPassword(!showPassword)}>
             <Feather
               name={showPassword ? "eye" : "eye-off"}
-              size={20}
+              size={18}
               color={Colors.foreground.secondary}
             />
           </Pressable>

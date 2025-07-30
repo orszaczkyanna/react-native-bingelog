@@ -4,7 +4,7 @@ import Feather from "@expo/vector-icons/Feather";
 import Colors from "@/constants/Colors";
 
 export default function TabLayout() {
-  const iconSize: number = 28;
+  const iconSize: number = 24;
 
   return (
     <SafeAreaView className="flex-1">
@@ -14,13 +14,13 @@ export default function TabLayout() {
           tabBarActiveTintColor: Colors.accent,
           tabBarInactiveTintColor: Colors.foreground.secondary,
           tabBarStyle: {
-            height: 88, // px
+            height: 84, // px
             backgroundColor: Colors.background.primary,
             borderTopColor: Colors.foreground.divider,
             paddingTop: 16,
           },
           tabBarLabelStyle: {
-            fontSize: 14,
+            fontSize: 12,
             fontFamily: "Nunito-Sans-Regular",
             marginBottom: 12,
             marginTop: 4,

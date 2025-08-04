@@ -11,6 +11,7 @@ import SecondaryButton from "@/components/SecondaryButton";
 
 import { refreshAccessToken } from "@/features/auth/refreshAccessToken";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
+import { EXPO_TMDB_API_KEY } from "@env";
 
 const Home = () => {
   const router = useRouter();
@@ -39,6 +40,10 @@ const Home = () => {
 
   const { accessToken } = useAuthContext();
   console.log("Access token in Home:", accessToken);
+
+  useEffect(() => {
+    console.log("TMDB API KEY:", EXPO_TMDB_API_KEY);
+  }, []);
 
   return (
     // <ProtectedScreen>

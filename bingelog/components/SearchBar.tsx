@@ -49,6 +49,7 @@ const SearchBar = ({ initialQuery, ...rest }: Props) => {
         cursorColor={Colors.accent}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
+        onSubmitEditing={handleSearch} // Triggers search when user presses the Enter/Return key
         {...rest} // placeholder, etc.
       />
 

@@ -1,34 +1,36 @@
 // Fetches movie and TV show results from TMDb using a search query
 
-import api from "@/lib/axios";
+import { tmdbApi } from "@/lib/axios";
 import { TMDBMediaResult, TMDBMultiSearchResponse } from "./tmdbTypes";
 import { EXPO_TMDB_API_KEY } from "@env";
-import { TMDB_BASE_URL } from "@/constants/config";
 
 // Perform a TMDb multi-search and return an array of movie and TV show results
 export const searchMedia = async (
   query: string, // search keyword (e.g. "conjuring")
-  page: number = 1 // which page to request (default is 1)
+  page: number = 1, // which page to request (default is 1)
+  apiKey: string = EXPO_TMDB_API_KEY // optional override for testability
 ): Promise<TMDBMediaResult[]> => {
-  if (!EXPO_TMDB_API_KEY) {
+  if (!apiKey || typeof apiKey !== "string" || apiKey.trim() === "") {
     throw new Error("TMDb search failed: missing API key.");
   }
 
   try {
     // Send GET request to TMDb multi-search endpoint, which allows searching movies, TV shows, and persons in one request
-    const response = await api.get<TMDBMultiSearchResponse>(
-      `${TMDB_BASE_URL}/search/multi`,
-      {
-        params: {
-          api_key: EXPO_TMDB_API_KEY, // TMDb v3 API key from .env
-          // Sufficient for public TMDb data (search, details, etc.)
-          // Bearer token only needed for TMDb user account actions (e.g. rating)
-          query, // search term
-          page, // selected page to retrieve
-          include_adult: false, // exclude 18+ adult content
-        },
-      }
-    );
+    const response = await tmdbApi.get<TMDBMultiSearchResponse>("/search/multi", {
+      params: {
+        api_key: apiKey, // TMDb v3 API key from .env
+        // Sufficient for public TMDb data (search, details, etc.)
+        // Bearer token only needed for TMDb user account actions (e.g. rating)
+        query, // search term
+        page, // selected page to retrieve
+        include_adult: false, // exclude 18+ adult content
+      },
+    });
+
+    // Ensure TMDb response contains a valid results array
+    if (!Array.isArray(response?.data?.results)) {
+      throw new Error("TMDb search failed: invalid or missing results");
+    }
 
     // Keep only movies and TV shows, exclude persons
     const filteredMediResults = response.data.results.filter(

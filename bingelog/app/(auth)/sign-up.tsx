@@ -40,7 +40,7 @@ const SignUp = () => {
   };
 
   return (
-    <ScreenWrapper>
+    <ScreenWrapper centered>
       <ScrollScreenWrapper viewClassName="gap-y-8">
         {/* App logo */}
         <Logo />

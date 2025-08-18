@@ -19,7 +19,7 @@ const index = () => {
   useRedirectIfAuthenticated();
 
   return (
-    <ScreenWrapper>
+    <ScreenWrapper centered>
       <ScrollScreenWrapper viewClassName="gap-y-4">
         <Logo />
 
@@ -35,8 +35,8 @@ const index = () => {
 
         {/* Text supports nesting */}
         <Text className="text-body text-center">
-          <Text className="text-accent">BingeLog</Text> helps you track what
-          you've watched, what you're watching, and what's next.
+          <Text className="text-accent">BingeLog</Text> helps you track what you've
+          watched, what you're watching, and what's next.
         </Text>
 
         <CTAButton

@@ -16,4 +16,8 @@
   .text-section-title {
     @apply text-foreground font-nunitoRegular text-xl;
   }
+
+  .layout-flex-center {
+    @apply flex-1 items-center justify-center;
+  }
 }

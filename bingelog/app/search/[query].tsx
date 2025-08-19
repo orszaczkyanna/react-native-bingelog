@@ -10,6 +10,7 @@ import { searchMedia } from "@/features/watchlist/searchMedia";
 import { TMDBMediaResult } from "@/features/watchlist/tmdbTypes";
 import SearchResultItem from "@/components/SearchResultItem";
 import Colors from "@/constants/Colors";
+import EmptyState from "@/components/EmptyState";
 
 const SearchResults = () => {
   // Dynamic parameter from the URL, which comes from the [query].tsx file name
@@ -84,11 +85,11 @@ const SearchResults = () => {
 
       {/* Empty state */}
       {!isLoading && !fetchErrorMessage && mediaResults.length === 0 && (
-        <View className="layout-flex-center">
-          <Text className="text-foreground-muted font-nunitoRegular">
-            No results found.
-          </Text>
-        </View>
+        <EmptyState
+          title="No results found"
+          subtitle="Try searching for another movie or show title"
+          showIllustration
+        />
       )}
 
       {/* Results list */}

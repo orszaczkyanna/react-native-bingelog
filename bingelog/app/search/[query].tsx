@@ -11,6 +11,7 @@ import { TMDBMediaResult } from "@/features/watchlist/tmdbTypes";
 import SearchResultItem from "@/components/SearchResultItem";
 import Colors from "@/constants/Colors";
 import EmptyState from "@/components/EmptyState";
+import ErrorState from "@/components/ErrorState";
 
 const SearchResults = () => {
   // Dynamic parameter from the URL, which comes from the [query].tsx file name
@@ -22,36 +23,35 @@ const SearchResults = () => {
   // State for TMDb search handling
   const [mediaResults, setMediaResults] = useState<TMDBMediaResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [fetchErrorMessage, setFetchErrorMessage] = useState<string | null>(
-    null
-  );
+  const [isFetchError, setIsFetchError] = useState(false);
 
-  // Fetch movie and TV show results when the query changes
-  useEffect(() => {
-    const runSearch = async () => {
-      if (!queryString) return;
+  // Function to fetch movie and TV show results using the current query
+  const runSearch = async () => {
+    if (!queryString) return;
 
-      setIsLoading(true);
-      setFetchErrorMessage(null);
+    setIsLoading(true);
+    setIsFetchError(false);
 
-      try {
-        const results = await searchMedia(queryString);
-        setMediaResults(results);
+    try {
+      const results = await searchMedia(queryString);
+      setMediaResults(results);
 
-        // Kept in case detailed search results need to be inspected again
-        /*
+      // Kept in case detailed search results need to be inspected again
+      /*
         // Print JSON response with 2-space indentation (easier to read)
         console.log("✅ TMDb SearchMedia Results:");
         console.log(JSON.stringify(results, null, 2));
-        */
-      } catch (error) {
-        setFetchErrorMessage("Failed to load search results.");
-        console.error("Error using searchMedia:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+      */
+    } catch (error) {
+      setIsFetchError(true);
+      console.error("Error using searchMedia:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  // Run search when screen loads or when a new search query is submitted
+  useEffect(() => {
     runSearch();
   }, [queryString]);
 
@@ -75,16 +75,17 @@ const SearchResults = () => {
       )}
 
       {/* Error state */}
-      {fetchErrorMessage && (
-        <View className="layout-flex-center">
-          <Text className="text-danger font-nunitoRegular">
-            {fetchErrorMessage}
-          </Text>
-        </View>
+      {isFetchError && (
+        <ErrorState
+          title="Failed to load results"
+          subtitle="Check your internet connection and try again"
+          buttonTitle="Try Again"
+          onPress={runSearch} // Retry with previous query
+        />
       )}
 
       {/* Empty state */}
-      {!isLoading && !fetchErrorMessage && mediaResults.length === 0 && (
+      {!isLoading && !isFetchError && mediaResults.length === 0 && (
         <EmptyState
           title="No results found"
           subtitle="Try searching for another movie or show title"
@@ -93,7 +94,7 @@ const SearchResults = () => {
       )}
 
       {/* Results list */}
-      {!isLoading && !fetchErrorMessage && mediaResults.length > 0 && (
+      {!isLoading && !isFetchError && mediaResults.length > 0 && (
         <FlatList
           data={mediaResults}
           // Generate a unique key using media type and ID (e.g. "Movie-1234")

@@ -3,15 +3,15 @@
 
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
-import { View, Text, FlatList, ActivityIndicator } from "react-native";
+import { View, FlatList } from "react-native";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import SearchBar from "@/components/SearchBar";
 import { searchMedia } from "@/features/watchlist/searchMedia";
 import { TMDBMediaResult } from "@/features/watchlist/tmdbTypes";
 import SearchResultItem from "@/components/SearchResultItem";
-import Colors from "@/constants/Colors";
 import EmptyState from "@/components/EmptyState";
 import ErrorState from "@/components/ErrorState";
+import LoadingIndicator from "@/components/LoadingIndicator";
 
 const SearchResults = () => {
   // Dynamic parameter from the URL, which comes from the [query].tsx file name
@@ -67,12 +67,7 @@ const SearchResults = () => {
       </View>
 
       {/* Loading indicator */}
-      {isLoading && (
-        <View className="layout-flex-center">
-          <ActivityIndicator size="large" color={Colors.accent} />
-          <Text className="text-foreground mt-2">Loading...</Text>
-        </View>
-      )}
+      {isLoading && <LoadingIndicator />}
 
       {/* Error state */}
       {isFetchError && (

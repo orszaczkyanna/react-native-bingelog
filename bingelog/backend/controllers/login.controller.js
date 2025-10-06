@@ -13,7 +13,7 @@ exports.loginUser = async (req, res) => {
 
     // Look up user by email
     const [userByEmail] = await dbPool.query(
-      "SELECT id, email, password FROM users WHERE email = ?",
+      "SELECT id, username, email, password FROM users WHERE email = ?",
       [email]
     );
 
@@ -46,7 +46,7 @@ exports.loginUser = async (req, res) => {
       message: "Login successful",
       accessToken, // same as `accessToken: accessToken`
       refreshToken,
-      user: { id: foundUser.id },
+      user: { id: foundUser.id, username: foundUser.username },
     });
 
     // Note: accessToken should be stored in MEMORY on frontend (not in localStorage or cookies)

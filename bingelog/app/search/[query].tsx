@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { View, FlatList } from "react-native";
 import ScreenWrapper from "@/components/ScreenWrapper";
+import UsernameHeader from "@/components/UsernameHeader";
 import SearchBar from "@/components/SearchBar";
 import { searchMedia } from "@/features/watchlist/searchMedia";
 import { TMDBMediaResult } from "@/features/watchlist/tmdbTypes";
@@ -58,11 +59,15 @@ const SearchResults = () => {
   return (
     <ScreenWrapper>
       {/* 
-        Search input
+        Header and controls container
         - Placed above FlatList (not in ListHeaderComponent) to keep it always visible (not scrollable)
         - Using `flex-1` here would cause FlatList content to overlap the search bar
       */}
       <View className="w-full items-center justify-center">
+        {/* Current username */}
+        <UsernameHeader />
+
+        {/* Search input */}
         <SearchBar initialQuery={queryString} />
       </View>
 

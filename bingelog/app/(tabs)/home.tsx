@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { View, Text } from "react-native";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import ProtectedScreen from "@/components/ProtectedScreen";
+import UsernameHeader from "@/components/UsernameHeader";
 import SearchBar from "@/components/SearchBar";
 
 // Test imports
@@ -49,9 +50,8 @@ const Home = () => {
     // <ProtectedScreen>
     <ScreenWrapper>
       <View className="flex-1 items-center justify-center gap-y-4">
-        <Text className="text-body">Home</Text>
+        <UsernameHeader />
         <SearchBar />
-        {/* <LabeledInputField /> */}
 
         {/* Test buttons */}
         <SecondaryButton

@@ -10,7 +10,7 @@ interface Props {
   onStart: () => void;
   onFinish: () => void;
   onAlert: (title: string, message: string) => void;
-  setSessionAuth: (token: string, userId: string) => void; // to save auth data (accessToken and user ID) in memory
+  setSessionAuth: (token: string, userId: string, username: string) => void; // to save auth data in memory
   onSuccess: () => void;
 }
 
@@ -64,7 +64,7 @@ export const handleLogin = async ({
     }
 
     // Save auth data in memory (React Context)
-    setSessionAuth(accessToken, user.id);
+    setSessionAuth(accessToken, user.id, user.username);
 
     // Save the refresh token in Secure Storage
     await saveRefreshToken(refreshToken);

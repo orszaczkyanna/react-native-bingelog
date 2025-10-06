@@ -30,7 +30,7 @@ const LogIn = () => {
   const { alertVisible, alertTitle, alertMessage, showAlert, hideAlert } =
     useAlertModal();
 
-  // Auth setter to save session data (access token and user ID) in memory after successful login
+  // Auth setter to save session data (access token, user ID, username) in memory after successful login
   const { setSessionAuth } = useAuthContext();
 
   // Submit form values and trigger async login process

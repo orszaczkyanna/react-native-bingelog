@@ -7,7 +7,7 @@ import { useAuthContext } from "@/context/AuthContext";
 import { refreshAccessToken } from "@/features/auth/refreshAccessToken";
 
 const useAxiosPrivate = () => {
-  const { userId, accessToken, setSessionAuth, clearSessionAuth } =
+  const { accessToken, userId, username, setSessionAuth, clearSessionAuth } =
     useAuthContext();
 
   useEffect(() => {
@@ -46,10 +46,16 @@ const useAxiosPrivate = () => {
               originalRequest.headers[
                 "Authorization"
               ] = `Bearer ${newAccessToken}`; // Update the request with the new token
-              setSessionAuth(newAccessToken, "unknown"); // TODO: re-fetch userId
+
+              // Update context with new token while keeping existing userId and username
+              setSessionAuth(
+                newAccessToken,
+                userId ?? "unknown",
+                username ?? "unknown"
+              );
 
               console.log(
-                `Access token (in response interceptor) refreshed: ${newAccessToken}\nUser ID: ${userId}`
+                `Access token (in response interceptor) refreshed: ${newAccessToken}\nUser ID: ${userId} (${username})`
               );
 
               return axiosPrivate(originalRequest); // Retry the original request with the new token
@@ -71,7 +77,7 @@ const useAxiosPrivate = () => {
       axiosPrivate.interceptors.request.eject(requestIntercept);
       axiosPrivate.interceptors.response.eject(responseIntercept);
     };
-  }, [accessToken]);
+  }, [accessToken, userId, username]);
 
   return axiosPrivate;
 };

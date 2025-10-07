@@ -7,6 +7,8 @@ import { View, FlatList } from "react-native";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import UsernameHeader from "@/components/UsernameHeader";
 import SearchBar from "@/components/SearchBar";
+import StatusSelectionBar from "@/components/StatusSelectionBar";
+import { StatusType } from "@/constants/statusOptions";
 import { searchMedia } from "@/features/watchlist/searchMedia";
 import { TMDBMediaResult } from "@/features/watchlist/tmdbTypes";
 import SearchResultItem from "@/components/SearchResultItem";
@@ -25,6 +27,9 @@ const SearchResults = () => {
   const [mediaResults, setMediaResults] = useState<TMDBMediaResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isFetchError, setIsFetchError] = useState(false);
+
+  // State for storing the currently selected status
+  const [activeStatus, setActiveStatus] = useState<StatusType | null>(null);
 
   // Function to fetch movie and TV show results using the current query
   const runSearch = async () => {
@@ -69,6 +74,12 @@ const SearchResults = () => {
 
         {/* Search input */}
         <SearchBar initialQuery={queryString} />
+
+        {/* Row of status icons to choose from (UI only for now) */}
+        <StatusSelectionBar
+          activeStatus={activeStatus}
+          onChange={setActiveStatus}
+        />
       </View>
 
       {/* Loading indicator */}

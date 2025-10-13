@@ -7,6 +7,7 @@ const app = express();
 const registerRoutes = require("./routes/register.routes");
 const loginRoutes = require("./routes/login.routes");
 const refreshRoutes = require("./routes/refresh.routes");
+const mediaRoutes = require("./routes/media.routes");
 
 app.use(express.json());
 
@@ -14,6 +15,9 @@ app.use(express.json());
 app.use("/api/auth", registerRoutes);
 app.use("/api/auth", loginRoutes);
 app.use("/api/auth", refreshRoutes);
+
+// Mount media-related endpoints (user watchlist) e.g. /api/media/add
+app.use("/api/media", mediaRoutes);
 
 // Test route to verify access token functionality (delete later)
 app.use("/api/protected", require("./routes/protected.routes"));

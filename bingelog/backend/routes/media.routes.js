@@ -40,7 +40,7 @@ router.delete(
   removeMediaFromList
 );
 
-// Update status/progress of a media item (placeholder)
+// Update status/progress of a media item
 router.patch(
   "/update/:tmdbId",
   verifyAccessToken,

@@ -40,7 +40,7 @@ const validateDeleteMedia = [
     .withMessage("tmdbId must be a valid number"),
 ];
 
-// Validate PATCH /media/update/:tmdbId (placeholder for now)
+// Validate PATCH /media/update/:tmdbId
 const validateUpdateMedia = [
   param("tmdbId")
     .trim()
@@ -49,6 +49,18 @@ const validateUpdateMedia = [
     .bail()
     .isInt({ min: 1 })
     .withMessage("tmdbId must be a valid number"),
+
+  body("status")
+    .optional()
+    .trim()
+    .isIn(validStatuses)
+    .withMessage(`status must be one of: ${validStatuses.join(", ")}`),
+
+  body("progress")
+    .optional()
+    .trim()
+    .isLength({ max: 30 })
+    .withMessage("progress must be 30 characters or less"),
 ];
 
 module.exports = {

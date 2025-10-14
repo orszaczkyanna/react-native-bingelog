@@ -73,9 +73,46 @@ exports.removeMediaFromList = async (req, res) => {
   }
 };
 
-// Placeholder for update (e.g., status or progress)
+// Update status and/or progress of a media item
 exports.updateMediaStatus = async (req, res) => {
-  return res
-    .status(501)
-    .json({ message: "Update functionality not implemented yet" });
+  const userId = req.userId;
+  const tmdbId = parseInt(req.params.tmdbId, 10); // ensure decimal
+  const { status, progress } = req.body;
+
+  // Build SET clause dynamically based on which fields are provided
+  const fieldsToUpdate = [];
+  const values = [];
+
+  if (status !== undefined) {
+    fieldsToUpdate.push("status = ?");
+    values.push(status);
+  }
+
+  if (progress !== undefined) {
+    fieldsToUpdate.push("progress = ?");
+    values.push(progress === "" ? null : progress); // Allow clearing progress with empty string
+  }
+
+  // If nothing was provided to update, return 400
+  if (fieldsToUpdate.length === 0) {
+    return res.status(400).json({ message: "No fields provided to update" });
+  }
+
+  try {
+    const [result] = await dbPool.query(
+      `UPDATE user_movies SET ${fieldsToUpdate.join(
+        ", "
+      )} WHERE user_id = ? AND tmdb_id = ?`,
+      [...values, userId, tmdbId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Item not found in your list" });
+    }
+
+    return res.status(200).json({ message: "Media item updated" });
+  } catch (error) {
+    console.error("Error updating media:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 };

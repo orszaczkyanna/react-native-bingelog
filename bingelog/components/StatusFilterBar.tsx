@@ -1,4 +1,5 @@
 // Renders a horizontal row of status icons; supports single-select with toggle off
+// Used for filtering search results by status
 
 import React from "react";
 import { View, Pressable } from "react-native";
@@ -12,7 +13,7 @@ interface Props {
   onChange: (nextSelectedStatus: StatusType | null) => void;
 }
 
-const StatusSelectionBar = ({ activeStatus, onChange }: Props) => {
+const StatusFilterBar = ({ activeStatus, onChange }: Props) => {
   // Handle when a status icon is tapped
   const handlePress = (pressedStatus: StatusType) => {
     // If the pressed status equals the active one, clear it;
@@ -55,4 +56,4 @@ const StatusSelectionBar = ({ activeStatus, onChange }: Props) => {
   );
 };
 
-export default StatusSelectionBar;
+export default StatusFilterBar;

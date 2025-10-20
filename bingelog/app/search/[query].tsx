@@ -7,7 +7,7 @@ import { View, FlatList } from "react-native";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import UsernameHeader from "@/components/UsernameHeader";
 import SearchBar from "@/components/SearchBar";
-import StatusSelectionBar from "@/components/StatusSelectionBar";
+import StatusFilterBar from "@/components/StatusFilterBar";
 import { StatusType } from "@/constants/statusOptions";
 import { searchMedia } from "@/features/watchlist/searchMedia";
 import { TMDBMediaResult } from "@/features/watchlist/tmdbTypes";
@@ -34,8 +34,9 @@ const SearchResults = () => {
   const [selectedMediaItem, setSelectedMediaItem] =
     useState<TMDBMediaResult | null>(null);
 
-  // State for storing the currently selected status
-  const [activeStatus, setActiveStatus] = useState<StatusType | null>(null);
+  // State for filtering search results by status
+  const [activeStatusFilter, setActiveStatusFilter] =
+    useState<StatusType | null>(null);
 
   // --- Mock watchlist ---
   // Note: Replace this with real backend data later
@@ -125,9 +126,9 @@ const SearchResults = () => {
         <SearchBar initialQuery={queryString ?? ""} />
 
         {/* Row of status icons to choose from (UI only for now) */}
-        <StatusSelectionBar
-          activeStatus={activeStatus}
-          onChange={setActiveStatus}
+        <StatusFilterBar
+          activeStatus={activeStatusFilter}
+          onChange={setActiveStatusFilter}
         />
       </View>
 

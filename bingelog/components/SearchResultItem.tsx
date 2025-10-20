@@ -1,7 +1,7 @@
 // Displays one TMDb search result with image, title, year, type, and an icon
 
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import { TMDBMediaResult } from "@/features/watchlist/tmdbTypes";
 import Feather from "@expo/vector-icons/Feather";
 import images from "@/constants/images";
@@ -9,11 +9,12 @@ import Colors from "@/constants/Colors";
 
 interface Props {
   item: TMDBMediaResult;
+  onStatusIconPress: (item: TMDBMediaResult) => void; // Called when the user taps the action icon (add/edit)
 }
 
 const IMAGE_BASE_URL_SMALL = "https://image.tmdb.org/t/p/w185";
 
-const SearchResultItem = ({ item }: Props) => {
+const SearchResultItem = ({ item, onStatusIconPress }: Props) => {
   // Get correct title and release year depending on media type (movie or TV show)
   const isMovie = item.media_type === "movie";
   const title = isMovie ? item.title : item.name;
@@ -55,14 +56,16 @@ const SearchResultItem = ({ item }: Props) => {
       </View>
 
       {/* Action icon */}
-      {/* mocked for now */}
-      <View className="ml-2">
+      <Pressable
+        onPress={() => onStatusIconPress(item)} // Trigger callback in parent
+        className="ml-2"
+      >
         <Feather
           name="plus-circle"
           size={20}
           color={Colors.foreground.secondary}
         />
-      </View>
+      </Pressable>
     </View>
   );
 };

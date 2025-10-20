@@ -12,6 +12,7 @@ import { StatusType } from "@/constants/statusOptions";
 import { searchMedia } from "@/features/watchlist/searchMedia";
 import { TMDBMediaResult } from "@/features/watchlist/tmdbTypes";
 import SearchResultItem from "@/components/SearchResultItem";
+import StatusSelectorBottomSheet from "@/components/StatusSelectorBottomSheet";
 import EmptyState from "@/components/EmptyState";
 import ErrorState from "@/components/ErrorState";
 import LoadingIndicator from "@/components/LoadingIndicator";
@@ -28,8 +29,21 @@ const SearchResults = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isFetchError, setIsFetchError] = useState(false);
 
+  // State for the bottom sheet - used to add or update items in the watchlist (database)
+  const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
+  const [selectedMediaItem, setSelectedMediaItem] =
+    useState<TMDBMediaResult | null>(null);
+
   // State for storing the currently selected status
   const [activeStatus, setActiveStatus] = useState<StatusType | null>(null);
+
+  // --- Mock watchlist ---
+  // Note: Replace this with real backend data later
+  const mockWatchlistIds: number[] = [1402, 500, 3033];
+  const isItemInWatchlist = (item: TMDBMediaResult | null) => {
+    if (!item) return false;
+    return mockWatchlistIds.includes(item.id);
+  };
 
   // Function to fetch movie and TV show results using the current query
   const runSearch = async () => {
@@ -56,6 +70,41 @@ const SearchResults = () => {
     }
   };
 
+  // Handle status icon press (e.g. plus or status icon) in a search result row
+  const handleStatusIconPress = (mediaItem: TMDBMediaResult) => {
+    // Open modal with the selected media item
+    setSelectedMediaItem(mediaItem);
+    setBottomSheetVisible(true);
+  };
+
+  // Handle selecting a status inside the bottom sheet
+  const handleSelectStatus = (status: StatusType) => {
+    if (!selectedMediaItem) {
+      setBottomSheetVisible(false);
+      return;
+    }
+
+    // TODO: Save the selected media item and its status to the watchlist database
+
+    // Close the bottom sheet after selecting a status
+    handleCloseBottomSheet();
+  };
+  // Handle removing an item from the user's watchlist
+  const handleRemoveFromList = () => {
+    if (!selectedMediaItem) return;
+    console.log("Remove from list");
+
+    // TODO: Call backend to remove selectedMediaItem from user's watchlist
+
+    handleCloseBottomSheet();
+  };
+
+  // Handle closing the bottom sheet
+  const handleCloseBottomSheet = () => {
+    setBottomSheetVisible(false);
+    setSelectedMediaItem(null);
+  };
+
   // Run search when screen loads or when a new search query is submitted
   useEffect(() => {
     runSearch();
@@ -73,7 +122,7 @@ const SearchResults = () => {
         <UsernameHeader />
 
         {/* Search input */}
-        <SearchBar initialQuery={queryString} />
+        <SearchBar initialQuery={queryString ?? ""} />
 
         {/* Row of status icons to choose from (UI only for now) */}
         <StatusSelectionBar
@@ -110,11 +159,30 @@ const SearchResults = () => {
           data={mediaResults}
           // Generate a unique key using media type and ID (e.g. "Movie-1234")
           keyExtractor={(item) => `${item.media_type}-${item.id}`}
-          renderItem={({ item }) => <SearchResultItem item={item} />}
+          renderItem={({ item }) => (
+            <SearchResultItem
+              item={item}
+              onStatusIconPress={handleStatusIconPress}
+            />
+          )}
           contentContainerStyle={{ paddingBottom: 20 }}
           className="w-full"
         />
       )}
+
+      {/* Bottom sheet for choosing status,
+      showing when adding or editing an item */}
+      <StatusSelectorBottomSheet
+        isVisible={isBottomSheetVisible}
+        onClose={handleCloseBottomSheet}
+        onSelectStatus={handleSelectStatus}
+        // Show Remove option only if item is already in watchlist
+        onRemove={
+          isItemInWatchlist(selectedMediaItem)
+            ? handleRemoveFromList
+            : undefined
+        }
+      />
     </ScreenWrapper>
   );
 };

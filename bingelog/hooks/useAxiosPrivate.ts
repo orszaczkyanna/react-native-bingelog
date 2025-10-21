@@ -17,7 +17,8 @@ const useAxiosPrivate = () => {
       (config) => {
         if (accessToken && config.headers && !config.headers["Authorization"]) {
           config.headers["Authorization"] = `Bearer ${accessToken}`; // Attach token
-          console.log("Access token in request interceptor:", accessToken);
+          // console.log("Access token in request interceptor:", accessToken);
+          console.log("Access token attached to request");
         }
         return config; // Continue with the updated request config
       },
@@ -54,9 +55,10 @@ const useAxiosPrivate = () => {
                 username ?? "unknown"
               );
 
-              console.log(
-                `Access token (in response interceptor) refreshed: ${newAccessToken}\nUser ID: ${userId} (${username})`
-              );
+              // console.log(
+              //   `Access token (in response interceptor) refreshed: ${newAccessToken}\nUser ID: ${userId} (${username})`
+              // );
+              console.log("Access token refreshed, retrying request");
 
               return axiosPrivate(originalRequest); // Retry the original request with the new token
             }

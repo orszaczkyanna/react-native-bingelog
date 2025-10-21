@@ -13,6 +13,7 @@ import { searchMedia } from "@/features/watchlist/searchMedia";
 import { TMDBMediaResult } from "@/features/watchlist/tmdbTypes";
 import SearchResultItem from "@/components/SearchResultItem";
 import StatusSelectorBottomSheet from "@/components/StatusSelectorBottomSheet";
+import { useWatchlistOperations } from "@/hooks/useWatchlistOperations";
 import EmptyState from "@/components/EmptyState";
 import ErrorState from "@/components/ErrorState";
 import LoadingIndicator from "@/components/LoadingIndicator";
@@ -38,12 +39,20 @@ const SearchResults = () => {
   const [activeStatusFilter, setActiveStatusFilter] =
     useState<StatusType | null>(null);
 
-  // --- Mock watchlist ---
-  // Note: Replace this with real backend data later
-  const mockWatchlistIds: number[] = [1402, 500, 3033];
-  const isItemInWatchlist = (item: TMDBMediaResult | null) => {
+  // User's watchlist state and related operations
+  const {
+    userWatchlist,
+    addMediaItemToWatchlist,
+    removeMediaItemFromWatchlist,
+  } = useWatchlistOperations();
+
+  // Helper function to check if a given media item is already in the user's watchlist
+  const isMediaItemInUserWatchlist = (item: TMDBMediaResult | null) => {
     if (!item) return false;
-    return mockWatchlistIds.includes(item.id);
+    return userWatchlist.some(
+      (watchlistItem) => watchlistItem.tmdb_id === item.id
+    );
+    // Note: .some() returns true if at least one element matches (unlike .find() which returns the element itself)
   };
 
   // Function to fetch movie and TV show results using the current query
@@ -79,25 +88,36 @@ const SearchResults = () => {
   };
 
   // Handle selecting a status inside the bottom sheet
-  const handleSelectStatus = (status: StatusType) => {
+  const handleSelectStatus = async (status: StatusType) => {
     if (!selectedMediaItem) {
-      setBottomSheetVisible(false);
+      handleCloseBottomSheet();
       return;
     }
 
-    // TODO: Save the selected media item and its status to the watchlist database
-
-    // Close the bottom sheet after selecting a status
-    handleCloseBottomSheet();
+    try {
+      await addMediaItemToWatchlist(selectedMediaItem.id, status);
+    } catch (error) {
+      // Note: error is already logged inside the hook
+    } finally {
+      // Close the bottom sheet after selecting a status
+      handleCloseBottomSheet();
+    }
   };
+
   // Handle removing an item from the user's watchlist
-  const handleRemoveFromList = () => {
-    if (!selectedMediaItem) return;
-    console.log("Remove from list");
+  const handleRemoveFromList = async () => {
+    if (!selectedMediaItem) {
+      handleCloseBottomSheet();
+      return;
+    }
 
-    // TODO: Call backend to remove selectedMediaItem from user's watchlist
-
-    handleCloseBottomSheet();
+    try {
+      await removeMediaItemFromWatchlist(selectedMediaItem.id);
+    } catch (error) {
+      // Note: error is already logged inside the hook
+    } finally {
+      handleCloseBottomSheet();
+    }
   };
 
   // Handle closing the bottom sheet
@@ -179,7 +199,7 @@ const SearchResults = () => {
         onSelectStatus={handleSelectStatus}
         // Show Remove option only if item is already in watchlist
         onRemove={
-          isItemInWatchlist(selectedMediaItem)
+          isMediaItemInUserWatchlist(selectedMediaItem)
             ? handleRemoveFromList
             : undefined
         }

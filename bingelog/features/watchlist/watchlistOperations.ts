@@ -29,12 +29,8 @@ export const addToWatchlist = async (
   try {
     await axiosPrivate.post("/media/add", { tmdb_id, status });
   } catch (error: any) {
-    if (error?.response?.status === 409) {
-      // Item already exists — update instead
-      await updateWatchlistItem(tmdb_id, { status });
-    } else {
-      throw error;
-    }
+    throw error;
+    // Note: Do not handle 409 here; let the hook decide how to proceed
   }
 };
 

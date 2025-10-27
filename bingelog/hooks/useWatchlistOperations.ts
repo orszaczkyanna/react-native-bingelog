@@ -22,6 +22,26 @@ export const useWatchlistOperations = () => {
   const [isWatchlistLoading, setIsWatchlistLoading] = useState(false);
   const [isWatchlistError, setIsWatchlistError] = useState(false);
 
+  // Helper function used by addMediaItemToWatchlist() for updating local state
+  // If item exists → update status; If not exists → add it
+  const upsertWatchlistItemLocally = (tmdb_id: number, status: StatusType) => {
+    setUserWatchlist((previousWatchlist) => {
+      const existsLocally = previousWatchlist.some(
+        (watchlistItem) => watchlistItem.tmdb_id === tmdb_id
+      );
+
+      if (existsLocally) {
+        return previousWatchlist.map((watchlistItem) =>
+          watchlistItem.tmdb_id === tmdb_id
+            ? { ...watchlistItem, status }
+            : watchlistItem
+        );
+      }
+
+      return [...previousWatchlist, { tmdb_id, status, progress: null }];
+    });
+  };
+
   // Fetch all watchlist items from backend
   const fetchUserWatchlistFromApi = async () => {
     setIsWatchlistLoading(true);
@@ -37,22 +57,49 @@ export const useWatchlistOperations = () => {
     }
   };
 
-  // Add new item
+  // Add new item, or update if it already exists
   const addMediaItemToWatchlist = async (
     tmdb_id: number,
     status: StatusType
   ) => {
     try {
+      const itemAlreadyInUserWatchlist = userWatchlist.some(
+        (watchlistItem) => watchlistItem.tmdb_id === tmdb_id
+      );
+
+      if (itemAlreadyInUserWatchlist) {
+        await updateWatchlistItem(tmdb_id, { status });
+        upsertWatchlistItemLocally(tmdb_id, status);
+        console.log(
+          `✅ Watchlist: updated item ${tmdb_id} status → "${status}"`
+        );
+        return;
+      }
+
       await addToWatchlist(tmdb_id, status);
-      // Update local state
-      setUserWatchlist((prevWatchlist) => [
-        ...prevWatchlist,
-        { tmdb_id, status, progress: null },
-      ]);
+      upsertWatchlistItemLocally(tmdb_id, status);
       console.log(
         `✅ Watchlist: added item ${tmdb_id} with status "${status}"`
       );
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 409) {
+        try {
+          await updateWatchlistItem(tmdb_id, { status });
+          upsertWatchlistItemLocally(tmdb_id, status);
+          console.log(
+            `✅ Watchlist: updated existing item ${tmdb_id} status → "${status}" (handled 409)`
+          );
+          return;
+        } catch (updateError) {
+          console.error(
+            "Failed to update item in watchlist after 409 conflict:",
+            updateError
+          );
+          setIsWatchlistError(true);
+          return;
+        }
+      }
+
       console.error("Failed to add item to watchlist:", error);
       setIsWatchlistError(true);
     }
@@ -101,6 +148,7 @@ export const useWatchlistOperations = () => {
     }
   };
 
+  // Fetch watchlist items when hook is first used
   useEffect(() => {
     fetchUserWatchlistFromApi();
   }, []);

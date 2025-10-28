@@ -80,6 +80,20 @@ const SearchResults = () => {
     }
   };
 
+  // Derived array variable: filtered list of results after applying the status filter
+  const filteredMediaResults = mediaResults.filter((mediaItem) => {
+    // If no filter selected, include everything
+    if (!activeStatusFilter) return true;
+
+    // Find the media item in the user's watchlist (match by tmdb_id)
+    const watchlistEntry = userWatchlist.find(
+      (watchlistItem) => watchlistItem.tmdb_id === mediaItem.id
+    );
+
+    // Keep only if the item's status matches the selected filter
+    return watchlistEntry?.status === activeStatusFilter;
+  });
+
   // Handle status icon press (e.g. plus or status icon) in a search result row
   const handleStatusIconPress = (mediaItem: TMDBMediaResult) => {
     // Open modal with the selected media item
@@ -177,7 +191,7 @@ const SearchResults = () => {
       {/* Results list */}
       {!isLoading && !isFetchError && mediaResults.length > 0 && (
         <FlatList
-          data={mediaResults}
+          data={filteredMediaResults}
           // Generate a unique key using media type and ID (e.g. "Movie-1234")
           keyExtractor={(item) => `${item.media_type}-${item.id}`}
           renderItem={({ item }) => (

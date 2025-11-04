@@ -1,3 +1,6 @@
+// Home screen (main tab)
+// Shows the search bar and media discovery sections (e.g. watchlist, trending, etc.)
+
 import React, { useEffect } from "react";
 import { View, Text } from "react-native";
 import ScreenWrapper from "@/components/ScreenWrapper";

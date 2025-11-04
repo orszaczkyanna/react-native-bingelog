@@ -21,14 +21,14 @@ const SearchBar = ({ initialQuery, ...rest }: Props) => {
     if (!trimmedQuery) return;
 
     // If we are already on the search page, update the query parameter
-    if (pathname.startsWith("/search")) {
+    if (pathname.startsWith("/home/search")) {
       router.setParams({ query: trimmedQuery });
     }
     // If we are not on the search page, navigate to the search page with the query
     else {
       // Note: Use object syntax in router.push to ensure type safety
       router.push({
-        pathname: "/search/[query]",
+        pathname: "/home/search/[query]",
         params: { query: trimmedQuery },
       });
     }

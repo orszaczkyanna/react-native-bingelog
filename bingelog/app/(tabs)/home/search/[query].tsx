@@ -200,7 +200,7 @@ const SearchResults = () => {
               onStatusIconPress={handleStatusIconPress}
             />
           )}
-          contentContainerStyle={{ paddingBottom: 20 }}
+          contentContainerStyle={{ paddingBottom: 52 }}
           className="w-full"
         />
       )}

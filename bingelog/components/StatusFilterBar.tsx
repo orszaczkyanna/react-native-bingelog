@@ -26,32 +26,34 @@ const StatusFilterBar = ({ activeStatus, onChange }: Props) => {
   };
 
   return (
-    <View className="w-[90vw] flex-row items-center justify-between pt-1 pb-5 border-b border-foreground-divider">
-      {/* Render all available status icons */}
-      {STATUS_OPTIONS.map(({ statusValue, featherIcon }) => {
-        // Helper variable for styling the icon differently if its statusValue matches the activeStatus
-        const isSelected = activeStatus === statusValue;
-        return (
-          <Pressable
-            key={statusValue}
-            // Update active status when this icon is tapped
-            onPress={() => handlePress(statusValue)}
-            className={`rounded-full p-3 ${
-              isSelected ? "bg-accent" : "bg-background-input"
-            }`}
-          >
-            <Feather
-              name={featherIcon}
-              size={20}
-              color={
-                isSelected
-                  ? Colors.background.primary
-                  : Colors.foreground.primary
-              }
-            />
-          </Pressable>
-        );
-      })}
+    <View className="w-screen self-center border-b border-foreground-divider">
+      <View className="w-[90vw] flex-row items-center justify-between pt-1 pb-5 mx-auto">
+        {/* Render all available status icons */}
+        {STATUS_OPTIONS.map(({ statusValue, featherIcon }) => {
+          // Helper variable for styling the icon differently if its statusValue matches the activeStatus
+          const isSelected = activeStatus === statusValue;
+          return (
+            <Pressable
+              key={statusValue}
+              // Update active status when this icon is tapped
+              onPress={() => handlePress(statusValue)}
+              className={`rounded-full p-3 ${
+                isSelected ? "bg-accent" : "bg-background-input"
+              }`}
+            >
+              <Feather
+                name={featherIcon}
+                size={20}
+                color={
+                  isSelected
+                    ? Colors.background.primary
+                    : Colors.foreground.primary
+                }
+              />
+            </Pressable>
+          );
+        })}
+      </View>
     </View>
   );
 };

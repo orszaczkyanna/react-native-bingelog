@@ -55,6 +55,16 @@ const SearchResults = () => {
     // Note: .some() returns true if at least one element matches (unlike .find() which returns the element itself)
   };
 
+  // Helper function to get the saved status of a media item from the user's watchlist, or null if not found
+  const getMediaStatusInWatchlist = (
+    tmdbMediaId: number
+  ): StatusType | null => {
+    const matchingWatchlistEntry = userWatchlist.find(
+      (watchlistEntry) => watchlistEntry.tmdb_id === tmdbMediaId
+    );
+    return matchingWatchlistEntry ? matchingWatchlistEntry.status : null;
+  };
+
   // Function to fetch movie and TV show results using the current query
   const runSearch = async () => {
     if (!queryString) return;
@@ -198,6 +208,7 @@ const SearchResults = () => {
             <SearchResultItem
               item={item}
               onStatusIconPress={handleStatusIconPress}
+              savedStatus={getMediaStatusInWatchlist(item.id)}
             />
           )}
           contentContainerStyle={{ paddingBottom: 52 }}

@@ -4,6 +4,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { View, FlatList } from "react-native";
+import { useRouter } from "expo-router";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import UsernameHeader from "@/components/UsernameHeader";
 import SearchBar from "@/components/SearchBar";
@@ -19,6 +20,8 @@ import ErrorState from "@/components/ErrorState";
 import LoadingIndicator from "@/components/LoadingIndicator";
 
 const SearchResults = () => {
+  const router = useRouter();
+
   // Dynamic parameter from the URL, which comes from the [query].tsx file name
   const { query } = useLocalSearchParams();
 
@@ -103,6 +106,15 @@ const SearchResults = () => {
     // Keep only if the item's status matches the selected filter
     return watchlistEntry?.status === activeStatusFilter;
   });
+
+  // Handle opening Media Details from a search result row (poster or text)
+  const handleOpenMediaDetails = (mediaItem: TMDBMediaResult) => {
+    // Navigate using the typed route object to satisfy Expo Router's generated types
+    router.push({
+      pathname: "/media-details/[tmdbId]",
+      params: { tmdbId: String(mediaItem.id) }, // Expo Router expects string params
+    });
+  };
 
   // Handle status icon press (e.g. plus or status icon) in a search result row
   const handleStatusIconPress = (mediaItem: TMDBMediaResult) => {
@@ -207,6 +219,7 @@ const SearchResults = () => {
           renderItem={({ item }) => (
             <SearchResultItem
               item={item}
+              onItemPress={() => handleOpenMediaDetails(item)}
               onStatusIconPress={handleStatusIconPress}
               savedStatus={getMediaStatusInWatchlist(item.id)}
             />

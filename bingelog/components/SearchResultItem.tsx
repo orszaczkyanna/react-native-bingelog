@@ -10,6 +10,7 @@ import { STATUS_OPTIONS, StatusType } from "@/constants/statusOptions";
 
 interface Props {
   item: TMDBMediaResult;
+  onItemPress: () => void; // Open Media Details when tapping the poster or the text block
   onStatusIconPress: (item: TMDBMediaResult) => void; // Called when the user taps the action icon (add/edit)
   savedStatus: StatusType | null; // Status of this media item in the user's watchlist (null if not added)
 }
@@ -28,7 +29,12 @@ const getFeatherIconNameForStatus = (
     : "plus-circle";
 };
 
-const SearchResultItem = ({ item, onStatusIconPress, savedStatus }: Props) => {
+const SearchResultItem = ({
+  item,
+  onItemPress,
+  onStatusIconPress,
+  savedStatus,
+}: Props) => {
   // Get correct title and release year depending on media type (movie or TV show)
   const isMovie = item.media_type === "movie";
   const title = isMovie ? item.title : item.name;
@@ -48,31 +54,37 @@ const SearchResultItem = ({ item, onStatusIconPress, savedStatus }: Props) => {
 
   return (
     <View className="flex-row items-center gap-4 p-4 border-b border-foreground-divider">
-      {/* Poster image */}
-      <Image
-        source={posterSource}
-        className="w-16 h-24 rounded-md"
-        resizeMode="cover"
-      />
+      {/* Wrap poster and text into a single tappable area */}
+      <Pressable
+        className="flex-1 flex-row items-center gap-4"
+        onPress={onItemPress}
+      >
+        {/* Poster image */}
+        <Image
+          source={posterSource}
+          className="w-16 h-24 rounded-md"
+          resizeMode="cover"
+        />
 
-      {/* Textual info */}
-      <View className="flex-1">
-        {/* Title */}
-        {/* max 2 lines, shows "..." ellipsis if too long */}
-        <Text
-          className="text-foreground font-nunitoSemiBold text-base"
-          numberOfLines={2}
-          ellipsizeMode="tail" // truncate end
-        >
-          {title}
-        </Text>
-        {/* Details */}
-        <Text className="text-foreground-secondary font-nunitoRegular text-sm">
-          {year || "Unknown release date"}
-          {"\n"}
-          {isMovie ? "Movie" : "TV Show"}
-        </Text>
-      </View>
+        {/* Textual info */}
+        <View className="flex-1">
+          {/* Title */}
+          {/* max 2 lines, shows "..." ellipsis if too long */}
+          <Text
+            className="text-foreground font-nunitoSemiBold text-base"
+            numberOfLines={2}
+            ellipsizeMode="tail" // truncate end
+          >
+            {title}
+          </Text>
+          {/* Details */}
+          <Text className="text-foreground-secondary font-nunitoRegular text-sm">
+            {year || "Unknown release date"}
+            {"\n"}
+            {isMovie ? "Movie" : "TV Show"}
+          </Text>
+        </View>
+      </Pressable>
 
       {/* Action icon */}
       <Pressable

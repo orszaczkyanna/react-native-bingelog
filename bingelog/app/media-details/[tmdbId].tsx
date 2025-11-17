@@ -2,15 +2,37 @@
 // Shows detailed information for a selected movie or TV show
 
 import React from "react";
-import { useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { View, Text, ScrollView } from "react-native";
 import ScreenWrapper from "@/components/ScreenWrapper";
+import Colors from "@/constants/Colors";
 
 const MediaDetails = () => {
-  const { tmdbId } = useLocalSearchParams<{ tmdbId: string }>();
+  // Get route params (tmdbId is required, mediaTitle is optional)
+  const { tmdbId, mediaTitle } = useLocalSearchParams<{
+    tmdbId: string;
+    mediaTitle?: string;
+  }>();
+
+  // Use a fallback if no title was passed
+  const headerTitle =
+    typeof mediaTitle === "string" && mediaTitle.length > 0
+      ? mediaTitle
+      : "Media Details";
 
   return (
     <ScreenWrapper>
+      {/* Set a dynamic header title based on the incoming param */}
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: headerTitle,
+          headerStyle: { backgroundColor: Colors.background.input },
+          headerTintColor: Colors.foreground.primary,
+          headerTitleStyle: { fontFamily: "Nunito-Sans-Regular" },
+        }}
+      />
+
       <ScrollView
         className="w-full"
         contentContainerStyle={{ paddingBottom: 48 }}

@@ -109,10 +109,17 @@ const SearchResults = () => {
 
   // Handle opening Media Details from a search result row (poster or text)
   const handleOpenMediaDetails = (mediaItem: TMDBMediaResult) => {
-    // Navigate using the typed route object to satisfy Expo Router's generated types
+    // Decide a human-readable title based on media type
+    const isMovie = mediaItem.media_type === "movie";
+    const mediaTitle = isMovie ? mediaItem.title : mediaItem.name;
+
+    // Navigate using the typed route object (params must be strings)
     router.push({
       pathname: "/media-details/[tmdbId]",
-      params: { tmdbId: String(mediaItem.id) }, // Expo Router expects string params
+      params: {
+        tmdbId: String(mediaItem.id), // Expo Router expects string params
+        mediaTitle: mediaTitle ?? "Media Details",
+      },
     });
   };
 

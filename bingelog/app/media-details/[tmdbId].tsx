@@ -5,7 +5,7 @@ import React from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { View, Text, ScrollView } from "react-native";
 import ScreenWrapper from "@/components/ScreenWrapper";
-import Colors from "@/constants/Colors";
+import { getThemedHeaderOptions } from "@/constants/themedHeaderOptions";
 
 const MediaDetails = () => {
   // Get route params (tmdbId is required, mediaTitle is optional)
@@ -23,15 +23,7 @@ const MediaDetails = () => {
   return (
     <ScreenWrapper>
       {/* Set a dynamic header title based on the incoming param */}
-      <Stack.Screen
-        options={{
-          headerShown: true,
-          title: headerTitle,
-          headerStyle: { backgroundColor: Colors.background.input },
-          headerTintColor: Colors.foreground.primary,
-          headerTitleStyle: { fontFamily: "Nunito-Sans-Regular" },
-        }}
-      />
+      <Stack.Screen options={getThemedHeaderOptions(headerTitle)} />
 
       <ScrollView
         className="w-full"

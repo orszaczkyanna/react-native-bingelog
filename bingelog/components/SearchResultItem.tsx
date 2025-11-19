@@ -2,7 +2,7 @@
 
 import React from "react";
 import { View, Text, Image, Pressable } from "react-native";
-import { TMDBMediaResult } from "@/features/watchlist/tmdbTypes";
+import { TMDBMediaResult } from "@/features/watchlist/tmdbSearchTypes";
 import Feather from "@expo/vector-icons/Feather";
 import images from "@/constants/images";
 import Colors from "@/constants/Colors";

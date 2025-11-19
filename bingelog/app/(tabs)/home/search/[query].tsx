@@ -11,7 +11,7 @@ import SearchBar from "@/components/SearchBar";
 import StatusFilterBar from "@/components/StatusFilterBar";
 import { StatusType } from "@/constants/statusOptions";
 import { searchMedia } from "@/features/watchlist/searchMedia";
-import { TMDBMediaResult } from "@/features/watchlist/tmdbTypes";
+import { TMDBMediaResult } from "@/features/watchlist/tmdbSearchTypes";
 import SearchResultItem from "@/components/SearchResultItem";
 import StatusSelectorBottomSheet from "@/components/StatusSelectorBottomSheet";
 import { useWatchlistOperations } from "@/hooks/useWatchlistOperations";

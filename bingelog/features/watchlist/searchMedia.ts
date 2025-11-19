@@ -1,7 +1,7 @@
 // Fetches movie and TV show results from TMDb using a search query
 
 import { tmdbApi } from "@/lib/axios";
-import { TMDBMediaResult, TMDBMultiSearchResponse } from "./tmdbTypes";
+import { TMDBMediaResult, TMDBMultiSearchResponse } from "./tmdbSearchTypes";
 import { EXPO_TMDB_API_KEY } from "@env";
 
 // Perform a TMDb multi-search and return an array of movie and TV show results
@@ -16,16 +16,19 @@ export const searchMedia = async (
 
   try {
     // Send GET request to TMDb multi-search endpoint, which allows searching movies, TV shows, and persons in one request
-    const response = await tmdbApi.get<TMDBMultiSearchResponse>("/search/multi", {
-      params: {
-        api_key: apiKey, // TMDb v3 API key from .env
-        // Sufficient for public TMDb data (search, details, etc.)
-        // Bearer token only needed for TMDb user account actions (e.g. rating)
-        query, // search term
-        page, // selected page to retrieve
-        include_adult: false, // exclude 18+ adult content
-      },
-    });
+    const response = await tmdbApi.get<TMDBMultiSearchResponse>(
+      "/search/multi",
+      {
+        params: {
+          api_key: apiKey, // TMDb v3 API key from .env
+          // Sufficient for public TMDb data (search, details, etc.)
+          // Bearer token only needed for TMDb user account actions (e.g. rating)
+          query, // search term
+          page, // selected page to retrieve
+          include_adult: false, // exclude 18+ adult content
+        },
+      }
+    );
 
     // Ensure TMDb response contains a valid results array
     if (!Array.isArray(response?.data?.results)) {

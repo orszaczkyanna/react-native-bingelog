@@ -14,7 +14,7 @@ interface Props {
 
 const ErrorState = ({ title, subtitle, buttonTitle, onPress }: Props) => {
   return (
-    <View className="h-[76vh] items-center justify-center">
+    <View className="h-[50vh] items-center justify-center">
       {/* Illustration */}
       <Image
         source={images.errorState}

@@ -119,6 +119,7 @@ const SearchResults = () => {
       params: {
         tmdbId: String(mediaItem.id), // Expo Router expects string params
         mediaTitle: mediaTitle ?? "Media Details",
+        mediaType: mediaItem.media_type, // "movie" | "tv" (string)
       },
     });
   };

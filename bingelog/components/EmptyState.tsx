@@ -21,7 +21,7 @@ const EmptyState = ({
   showIllustration = false,
 }: Props) => {
   return (
-    <View className="h-[76vh] items-center justify-center">
+    <View className="h-[50vh] items-center justify-center">
       {/* Optional illustration */}
       {showIllustration && (
         <Image

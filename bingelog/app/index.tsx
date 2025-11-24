@@ -8,6 +8,7 @@ import Logo from "@/components/Logo";
 import CTAButton from "@/components/CTAButton";
 import images from "@/constants/images";
 import ScrollScreenWrapper from "@/components/ScrollScreenWrapper";
+import AuthRedirectPrompt from "@/components/AuthRedirectPrompt";
 import { useRedirectIfAuthenticated } from "@/hooks/useRedirectIfAuthenticated";
 
 import SecondaryButton from "@/components/SecondaryButton"; // for testing
@@ -35,8 +36,8 @@ const index = () => {
 
         {/* Text supports nesting */}
         <Text className="text-body text-center">
-          <Text className="text-accent">BingeLog</Text> helps you track what you've
-          watched, what you're watching, and what's next.
+          <Text className="text-accent">BingeLog</Text> helps you track what
+          you've watched, what you're watching, and what's next.
         </Text>
 
         <CTAButton
@@ -44,6 +45,13 @@ const index = () => {
           onPress={() => router.push("/sign-up")}
           // (auth) is a layout group folder, so it doesn't appear in the route path
           pressableClassName="my-4"
+        />
+
+        {/* Link to log-in screen */}
+        <AuthRedirectPrompt
+          message="Already registered?"
+          linkText="Log in"
+          linkHref="/log-in"
         />
 
         {/* Temporary link to Home for testing */}

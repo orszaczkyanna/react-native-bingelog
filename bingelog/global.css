@@ -17,6 +17,10 @@
     @apply text-foreground font-nunitoRegular text-xl;
   }
 
+  .text-meta {
+    @apply text-foreground-secondary font-nunitoRegular text-sm;
+  }
+
   .layout-flex-center {
     @apply flex-1 items-center justify-center;
   }

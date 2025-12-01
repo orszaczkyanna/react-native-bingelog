@@ -1,7 +1,8 @@
 // Renders poster, title, and primary metadata (year, type, genres, runtime, user score)
 
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Image } from "react-native";
+import Popover, { PopoverPlacement } from "react-native-popover-view";
 import Colors from "@/constants/Colors";
 import images from "@/constants/images";
 import {
@@ -93,6 +94,10 @@ const MediaHeaderSection = ({ mediaType, details }: Props) => {
   const runtimeText = getRuntimeText(mediaType, details);
   const userScoreText = getUserScoreText(details.vote_average);
 
+  // Decide if the title is likely truncated (heuristic)
+  const isTitleLikelyTruncated = title.length > 45; // tune as needed
+  const [isTitlePopoverVisible, setTitlePopoverVisible] = useState(false);
+
   return (
     <View className="px-4 pt-0 pb-6">
       <View className="flex-row gap-4">
@@ -105,17 +110,43 @@ const MediaHeaderSection = ({ mediaType, details }: Props) => {
 
         {/* Title and metadata */}
         <View className="flex-1 h-52">
-          {/* Title fixed at the top (max 3 lines) */}
-          <Text
-            className="text-foreground font-nunitoBold text-2xl"
-            numberOfLines={3}
-            ellipsizeMode="tail"
+          {/* Title (max 3 lines) with optional popover to show full title */}
+          <Popover
+            isVisible={isTitlePopoverVisible}
+            onRequestClose={() => setTitlePopoverVisible(false)}
+            placement={[PopoverPlacement.BOTTOM, PopoverPlacement.AUTO]} // prefer showing the popover below the title
+            // Render the anchor (the truncated title)
+            from={
+              <Text
+                className="text-foreground font-nunitoBold text-2xl"
+                numberOfLines={3}
+                ellipsizeMode="tail"
+                onPress={() => {
+                  // Only open if the title is likely truncated
+                  if (isTitleLikelyTruncated) setTitlePopoverVisible(true);
+                }}
+              >
+                {title}
+              </Text>
+            }
+            popoverStyle={{
+              backgroundColor: Colors.background.input,
+              borderRadius: 6,
+              padding: 12,
+            }}
+            backgroundStyle={{ backgroundColor: "rgba(0,0,0,0.4)" }} // dim the backdrop a bit
           >
-            {title}
-          </Text>
+            {/* Full title inside the popover */}
+            <Text
+              className="text-foreground font-nunitoRegular text-base"
+              selectable
+            >
+              {title}
+            </Text>
+          </Popover>
 
-          {/* Metadata fills remaining height: evenly spaced, last line near the bottom */}
-          <View className="flex-1 justify-between mt-3 pb-1">
+          {/* Metadata fills remaining height: evenly spaced, last line at the bottom */}
+          <View className="flex-1 justify-between mt-3">
             <Text className="text-meta">{yearText}</Text>
             <Text className="text-meta">{typeText}</Text>
             <Text className="text-meta">{genresText}</Text>

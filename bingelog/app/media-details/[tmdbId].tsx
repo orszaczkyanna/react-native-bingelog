@@ -10,6 +10,7 @@ import { useTmdbMediaDetailsBundle } from "@/hooks/useTmdbMediaDetailsBundle";
 import LoadingIndicator from "@/components/LoadingIndicator";
 import ErrorState from "@/components/ErrorState";
 import MediaHeaderSection from "@/components/MediaHeaderSection";
+import MediaWatchlistSection from "@/components/MediaWatchlistSection";
 
 const MediaDetails = () => {
   // Get route params (tmdbId is required, mediaTitle and mediaType are optional)
@@ -79,6 +80,9 @@ const MediaDetails = () => {
               mediaType={tmdbBundle.mediaType}
               details={tmdbBundle.details}
             />
+
+            {/* Watchlist add/edit section */}
+            <MediaWatchlistSection tmdbId={Number(tmdbId)} />
 
             {/* Overview (temporary) */}
             <View className="px-4">

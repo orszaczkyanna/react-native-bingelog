@@ -14,7 +14,7 @@ import { StatusType } from "@/constants/statusOptions";
 export interface UserWatchlistItem {
   tmdb_id: number;
   status: StatusType;
-  progress: number | null;
+  progress: string | null;
 }
 
 export const useWatchlistOperations = () => {
@@ -108,7 +108,7 @@ export const useWatchlistOperations = () => {
   // Update item (status or progress)
   const updateMediaItemInWatchlist = async (
     tmdb_id: number,
-    updates: { status?: StatusType; progress?: number | null }
+    updates: { status?: StatusType; progress?: string | null }
   ) => {
     try {
       await updateWatchlistItem(tmdb_id, updates);

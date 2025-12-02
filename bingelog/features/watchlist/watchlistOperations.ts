@@ -6,12 +6,12 @@ import { StatusType } from "@/constants/statusOptions";
 // Used by updateWatchlistItem() to send only the modified fields (status or progress)
 interface UpdateParams {
   status?: StatusType;
-  progress?: number | null;
+  progress?: string | null;
 }
 
 // --- GET all media items for the current user ---
 export const getWatchlistItems = async (): Promise<
-  { tmdb_id: number; status: StatusType; progress: number | null }[]
+  { tmdb_id: number; status: StatusType; progress: string | null }[]
 > => {
   try {
     const response = await axiosPrivate.get("/media/list");

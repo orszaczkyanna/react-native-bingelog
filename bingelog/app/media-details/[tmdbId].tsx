@@ -12,6 +12,7 @@ import ErrorState from "@/components/ErrorState";
 import MediaHeaderSection from "@/components/MediaHeaderSection";
 import MediaWatchlistSection from "@/components/MediaWatchlistSection";
 import MediaOverviewSection from "@/components/MediaOverviewSection";
+import MediaVideoSection from "@/components/MediaVideoSection";
 
 const MediaDetails = () => {
   // Get route params (tmdbId is required, mediaTitle and mediaType are optional)
@@ -88,32 +89,11 @@ const MediaDetails = () => {
             {/* Overview section */}
             <MediaOverviewSection overviewText={tmdbBundle.details.overview} />
 
-            {/* Video info + link (temporary) */}
-            <View className="px-4 pt-3">
-              {videoKey && (
-                <Text className="text-foreground-secondary font-nunitoRegular text-sm">
-                  {(selectedVideoType ?? "Video") +
-                    " available on YouTube (key): "}
-                  {videoKey}
-                </Text>
-              )}
-
-              {/* Open trailer via YouTube URL (temporary) */}
-              {videoKey && (
-                <Pressable
-                  onPress={() =>
-                    Linking.openURL(
-                      `https://www.youtube.com/watch?v=${videoKey}`
-                    )
-                  }
-                  className="mt-2"
-                >
-                  <Text className="text-accent font-nunitoSemiBold text-sm">
-                    Open {selectedVideoType ?? "Video"} on YouTube
-                  </Text>
-                </Pressable>
-              )}
-            </View>
+            {/* Video section (renders only when a videoKey exists) */}
+            <MediaVideoSection
+              videoKey={videoKey}
+              videoTypeLabel={selectedVideoType}
+            />
 
             {/* Render a short top-cast preview (temporary) */}
             {tmdbBundle.credits?.cast?.length > 0 && (

@@ -53,16 +53,6 @@ const MediaDetails = () => {
         className="w-full"
         contentContainerStyle={{ paddingBottom: 48 }}
       >
-        {/* Temporary header section */}
-        <View className="p-4">
-          <Text className="text-foreground font-nunitoBold text-xl">
-            Media Details
-          </Text>
-          <Text className="text-foreground-secondary font-nunitoRegular text-sm mt-1">
-            TMDb ID: {tmdbId}
-          </Text>
-        </View>
-
         {/* Loading indicator */}
         {isLoading && <LoadingIndicator />}
 
@@ -115,6 +105,13 @@ const MediaDetails = () => {
             )}
           </View>
         )}
+
+        {/* Show TMDb ID during development */}
+        <View className="px-4 pt-4 mt-6">
+          <Text className="text-foreground-secondary font-nunitoRegular text-xs text-center">
+            TMDb ID: {tmdbId}
+          </Text>
+        </View>
       </ScrollView>
     </ScreenWrapper>
   );

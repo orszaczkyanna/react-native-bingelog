@@ -1,5 +1,6 @@
 // Home screen (main tab)
 // Shows the search bar and media discovery sections (e.g. watchlist, trending, etc.)
+// Note: discovery sections not yet implemented
 
 import React, { useEffect } from "react";
 import { View, Text } from "react-native";
@@ -8,16 +9,16 @@ import ProtectedScreen from "@/components/ProtectedScreen";
 import UsernameHeader from "@/components/UsernameHeader";
 import SearchBar from "@/components/SearchBar";
 
-// Test imports
+// Temporary imports kept for manual testing
 import { useRouter } from "expo-router";
 import { useAuthContext } from "@/context/AuthContext";
 import SecondaryButton from "@/components/SecondaryButton";
-
 import { refreshAccessToken } from "@/features/auth/refreshAccessToken";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import { EXPO_TMDB_API_KEY } from "@env";
 
 const Home = () => {
+  // for navigation/auth
   const router = useRouter();
   const { clearSessionAuth } = useAuthContext();
 
@@ -42,6 +43,7 @@ const Home = () => {
     }
   };
 
+  // for access token and API key connection
   const { accessToken } = useAuthContext();
   console.log("Access token in Home:", accessToken);
 
@@ -64,6 +66,7 @@ const Home = () => {
           pressableClassName="mt-10"
         />
 
+        {/* 
         <SecondaryButton
           title="Sign up"
           onPress={() => router.replace("/sign-up")}
@@ -85,7 +88,7 @@ const Home = () => {
         <SecondaryButton
           title="Test Protected Request"
           onPress={testProtectedRequest}
-        />
+        /> */}
       </View>
     </ScreenWrapper>
     // </ProtectedScreen>

@@ -1,7 +1,7 @@
 // Onboarding Screen
 
 import React from "react";
-import { Image, Text } from "react-native";
+import { Image, Text, View } from "react-native";
 import { Link, useRouter } from "expo-router";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import Logo from "@/components/Logo";
@@ -55,14 +55,20 @@ const index = () => {
         />
 
         {/* Temporary link to Home for testing */}
-        <SecondaryButton title="Home" onPress={() => router.push("/home")} />
+        <SecondaryButton
+          title="Home (dev)"
+          onPress={() => router.push("/home")}
+        />
 
-        <Text className="text-foreground-secondary font-nunitoRegular text-sm">
-          Illustrations by{" "}
-          <Link href="https://storyset.com/" className="text-accent">
-            Storyset
-          </Link>
-        </Text>
+        {/* Storyset credit */}
+        <View className="mt-auto pt-2">
+          <Text className="text-foreground-secondary font-nunitoRegular text-sm">
+            Illustrations by{" "}
+            <Link href="https://storyset.com/" className="text-accent">
+              Storyset
+            </Link>
+          </Text>
+        </View>
       </ScrollScreenWrapper>
     </ScreenWrapper>
   );

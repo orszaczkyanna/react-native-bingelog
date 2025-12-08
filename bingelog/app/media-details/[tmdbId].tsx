@@ -11,6 +11,7 @@ import LoadingIndicator from "@/components/LoadingIndicator";
 import ErrorState from "@/components/ErrorState";
 import MediaHeaderSection from "@/components/MediaHeaderSection";
 import MediaWatchlistSection from "@/components/MediaWatchlistSection";
+import MediaOverviewSection from "@/components/MediaOverviewSection";
 
 const MediaDetails = () => {
   // Get route params (tmdbId is required, mediaTitle and mediaType are optional)
@@ -84,16 +85,8 @@ const MediaDetails = () => {
             {/* Watchlist add/edit section */}
             <MediaWatchlistSection tmdbId={Number(tmdbId)} />
 
-            {/* Overview (temporary) */}
-            <View className="px-4">
-              <Text className="text-foreground font-nunitoSemiBold text-base mb-2">
-                Overview
-              </Text>
-
-              <Text className="text-foreground-secondary font-nunitoRegular text-sm">
-                {tmdbBundle.details.overview || "No overview available."}
-              </Text>
-            </View>
+            {/* Overview section */}
+            <MediaOverviewSection overviewText={tmdbBundle.details.overview} />
 
             {/* Video info + link (temporary) */}
             <View className="px-4 pt-3">

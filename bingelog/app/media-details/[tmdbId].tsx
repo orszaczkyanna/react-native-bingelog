@@ -13,6 +13,7 @@ import MediaHeaderSection from "@/components/MediaHeaderSection";
 import MediaWatchlistSection from "@/components/MediaWatchlistSection";
 import MediaOverviewSection from "@/components/MediaOverviewSection";
 import MediaVideoSection from "@/components/MediaVideoSection";
+import MediaCastSection from "@/components/MediaCastSection";
 
 const MediaDetails = () => {
   // Get route params (tmdbId is required, mediaTitle and mediaType are optional)
@@ -85,24 +86,8 @@ const MediaDetails = () => {
               videoTypeLabel={selectedVideoType}
             />
 
-            {/* Render a short top-cast preview (temporary) */}
-            {tmdbBundle.credits?.cast?.length > 0 && (
-              <View className="px-4 pt-4">
-                <Text className="text-foreground font-nunitoSemiBold text-base mb-1">
-                  Top cast
-                </Text>
-
-                {tmdbBundle.credits.cast.slice(0, 5).map((castMember) => (
-                  <Text
-                    key={castMember.id}
-                    className="text-foreground-secondary font-nunitoRegular text-sm"
-                  >
-                    {castMember.name}
-                    {castMember.character ? ` as ${castMember.character}` : ""}
-                  </Text>
-                ))}
-              </View>
-            )}
+            {/* Cast section (horizontally scrollable cards) */}
+            <MediaCastSection castList={tmdbBundle.credits.cast} />
           </View>
         )}
 
